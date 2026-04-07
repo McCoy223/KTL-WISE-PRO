@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Import Results - GradeWise Pro</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- PDF.js for PDF parsing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <!-- SheetJS for Excel parsing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+
+<body>
+    <!-- MOBILE SIDEBAR TOGGLE -->
+    <button class="sidebar-toggle" id="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+    <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+                <div>
+                    <div class="brand-name">GradeWise Pro</div>
+                    <div class="brand-sub">Terminal Report Studio</div>
+                </div>
+                <button onclick="closeSidebar()"
+                    style="display:none;background:none;border:none;color:rgba(255,255,255,0.4);font-size:20px;cursor:pointer;"
+                    id="sidebar-close">×</button>
+            </div>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="nav-section-label">Overview</div>
+            <div class="nav-item" onclick="window.location.href='gradewise-pro.html'">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <rect x="3" y="3" width="7" height="7" />
+                    <rect x="14" y="3" width="7" height="7" />
+                    <rect x="3" y="14" width="7" height="7" />
+                    <rect x="14" y="14" width="7" height="7" />
+                </svg>
+                Dashboard
+            </div>
+            <div class="nav-section-label">Students</div>
+            <div class="nav-item" onclick="window.location.href='gradewise-pro.html'">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                </svg>
+                Student Registry
+            </div>
+            <div class="nav-item" onclick="window.location.href='gradewise-pro.html'">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                    <line x1="12" y1="17" x2="12" y2="22" />
+                    <line x1="9.5" y1="19.5" x2="14.5" y2="19.5" />
+                </svg>
+                Add Student
+            </div>
+            <div class="nav-section-label">Reports</div>
+            <div class="nav-item" onclick="window.location.href='gradewise-pro.html'">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                    <line x1="16" y1="13" x2="8" y2="13" />
+                    <line x1="16" y1="17" x2="8" y2="17" />
+                </svg>
+                Report Preview
+            </div>
+            <div class="nav-item" onclick="window.location.href='batch-printing.html'">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="17 8 12 3 7 8" />
+                    <line x1="12" y1="3" x2="12" y2="15" />
+                </svg>
+                Batch Export
+            </div>
+            <div class="nav-item" onclick="window.location.href='gradewise-pro.html'">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                    <polyline points="22,6 12,13 2,6" />
+                </svg>
+                Email Log
+            </div>
+            <div class="nav-section-label">Analytics</div>
+            <div class="nav-item" onclick="window.location.href='analysis.html'">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                </svg>
+                Performance Charts
+            </div>
+            <div class="nav-item" onclick="window.location.href='gradewise-pro.html'">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                    <line x1="16" y1="2" x2="16" y2="6" />
+                    <line x1="8" y1="2" x2="8" y2="6" />
+                    <line x1="3" y1="10" x2="21" y2="10" />
+                </svg>
+                Attendance
+            </div>
+            <div class="nav-item active" onclick="window.location.href='import-results.html'">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="7 10 12 15 17 10" />
+                    <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+                Import Results
+            </div>
+            <div class="nav-item" onclick="window.location.href='gradewise-pro.html'">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="2" y1="12" x2="22" y2="12" />
+                    <path
+                        d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                </svg>
+                Parent Portal
+            </div>
+            <div class="nav-item" onclick="window.location.href='settings.html'">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="3" />
+                    <path
+                        d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M19.07 19.07l-1.41-1.41M4.93 19.07l1.41-1.41M12 2v2M12 20v2M2 12h2M20 12h2" />
+                </svg>
+                School Settings
+            </div>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="dark-toggle" onclick="toggleDarkMode()" id="dark-toggle-btn">
+                <div class="toggle-track" id="dark-toggle-track">
+                    <div class="toggle-thumb"></div>
+                </div>
+                <span style="font-size:12px;color:rgba(255,255,255,0.5);" id="dark-toggle-label">Dark Mode</span>
+            </div>
+            <div style="margin-top:8px;">
+                <div
+                    style="font-size:10px;color:rgba(255,255,255,0.3);margin-bottom:5px;letter-spacing:0.1em;text-transform:uppercase;">
+                    Language</div>
+                <div class="lang-switcher" id="lang-switcher">
+                    <button class="lang-btn active" onclick="setLang('en')">EN</button>
+                    <button class="lang-btn" onclick="setLang('fr')">FR</button>
+                    <button class="lang-btn" onclick="setLang('tw')">TW</button>
+                    <button class="lang-btn" onclick="setLang('ha')">HA</button>
+                </div>
+            </div>
+            <div style="margin-top:10px;">
+                <div id="conn-badge" class="conn-badge online">
+                    <span class="conn-dot"></span><span id="conn-label">Online</span>
+                </div>
+            </div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.2);margin-top:6px;">v2.0 · GradeWise Pro</div>
+        </div>
+    </aside>
+
+    <!-- OFFLINE BANNER -->
+    <div class="offline-banner" id="offline-banner">
+        <span>⚠</span>
+        <span><strong>You're offline.</strong> All student data is still accessible. AI features and email sending will
+            resume when your connection is restored.</span>
+    </div>
+
+    <!-- MAIN -->
+    <main class="main">
+        <div class="topbar">
+            <div class="topbar-title" id="topbar-title">Import Results</div>
+            <div class="topbar-actions">
+                <span class="tag">Term 2 · 2025/26</span>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- Upload Zone -->
+            <div class="panel mb-4">
+                <div class="panel-header"><span class="panel-title">Upload Files</span></div>
+                <div class="panel-body">
+                    <div class="upload-zone" id="upload-zone"
+                        style="border:2px dashed var(--rule);border-radius:8px;padding:2rem;text-align:center;transition:border-color 0.3s ease;margin-bottom:1rem;">
+                        <div style="font-size:3rem;margin-bottom:1rem;">📄</div>
+                        <h3 style="font-size:1.125rem;font-weight:600;color:var(--ink);margin-bottom:0.5rem;">Drop files
+                            here or click to browse</h3>
+                        <p style="font-size:0.875rem;color:var(--ink-light);margin-bottom:1rem;">Supports PDF and Excel
+                            files (.pdf, .xlsx, .xls)<br><strong>Students will be automatically added to your
+                                database</strong></p>
+                        <input type="file" id="file-input" multiple accept=".pdf,.xlsx,.xls" style="display:none;">
+                        <button onclick="document.getElementById('file-input').click()"
+                            style="background:linear-gradient(135deg,#1a5fa0,#0f4a8a);color:white;border:none;border-radius:6px;padding:0.5rem 1.5rem;font-weight:600;cursor:pointer;">Choose
+                            Files</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- File List -->
+            <div id="file-list" class="panel mb-4" style="display:none;">
+                <div class="panel-header"><span class="panel-title">Selected Files</span></div>
+                <div class="panel-body">
+                    <div id="file-items"></div>
+                </div>
+            </div>
+
+            <!-- Processing Status -->
+            <div id="processing-status" class="panel mb-4" style="display:none;">
+                <div class="panel-body">
+                    <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem;">
+                        <div
+                            style="animation:spin 1s linear infinite;border-radius:9999px;height:1rem;width:1rem;border-bottom:2px solid #1a5fa0;">
+                        </div>
+                        <span id="status-text" style="font-size:0.875rem;font-weight:500;">Processing files...</span>
+                    </div>
+                    <div style="width:100%;height:8px;background:var(--bg-light);border-radius:4px;overflow:hidden;">
+                        <div id="progress-fill"
+                            style="height:100%;background:#1a5fa0;width:0%;transition:width 0.3s ease;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Preview -->
+            <div id="data-preview" class="panel mb-4" style="display:none;">
+                <div class="panel-header"><span class="panel-title">Extracted Student Data</span></div>
+                <div class="panel-body">
+                    <div id="student-data"></div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="panel">
+                <div class="panel-body">
+                    <div style="display:flex;gap:1rem;justify-content:flex-end;">
+                        <button id="clear-btn" onclick="clearAll()"
+                            style="border:1px solid var(--rule);color:var(--ink);border-radius:6px;padding:0.5rem 1rem;background:var(--paper);cursor:pointer;">Clear
+                            All</button>
+                        <button id="import-btn" onclick="processFiles()"
+                            style="background:linear-gradient(135deg,#059669,#047857);color:white;border:none;border-radius:6px;padding:0.5rem 1.5rem;font-weight:600;cursor:pointer;"
+                            disabled>Process & Import</button>
+                    </div>
+                    <div id="import-status"
+                        style="margin-top:1rem;padding:0.75rem;border-radius:6px;background:var(--bg-light);border:1px solid var(--rule);display:none;">
+                        <div style="display:flex;align-items:center;justify-content:space-between;">
+                            <div style="display:flex;align-items:center;gap:0.5rem;">
+                                <span style="color:#059669;font-weight:600;">✓</span>
+                                <span id="import-message" style="font-size:0.875rem;color:var(--ink);"></span>
+                            </div>
+                            <button onclick="window.location.href='gradewise-pro.html'"
+                                style="background:linear-gradient(135deg,#1a5fa0,#0f4a8a);color:white;border:none;border-radius:4px;padding:0.25rem 0.75rem;font-size:0.75rem;font-weight:600;cursor:pointer;">View
+                                Dashboard</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="gradewise-pro.js"></script>
+    <script>
+        // Initialize PDF.js
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+        let uploadedFiles = [];
+        let extractedData = [];
+
+        // Upload zone event listeners
+        const uploadZone = document.getElementById('upload-zone');
+        const fileInput = document.getElementById('file-input');
+
+        uploadZone.addEventListener('click', () => fileInput.click());
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.style.borderColor = '#1a5fa0';
+            uploadZone.style.backgroundColor = '#f0f9ff';
+        });
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.style.borderColor = 'var(--rule)';
+            uploadZone.style.backgroundColor = '';
+        });
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.style.borderColor = 'var(--rule)';
+            uploadZone.style.backgroundColor = '';
+            const files = Array.from(e.dataTransfer.files);
+            handleFiles(files);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+            handleFiles(files);
+        });
+
+        function handleFiles (files) {
+            const validFiles = files.filter(file => {
+                const ext = file.name.split('.').pop().toLowerCase();
+                return ['pdf', 'xlsx', 'xls'].includes(ext);
+            });
+
+            if (validFiles.length === 0)
+            {
+                alert('Please select valid PDF or Excel files.');
+                return;
+            }
+
+            uploadedFiles = validFiles;
+            displayFileList();
+            // Enable the process button when files are selected
+            document.getElementById('import-btn').disabled = false;
+            document.getElementById('import-btn').textContent = 'Process & Import';
+        }
+
+        function displayFileList () {
+            const fileList = document.getElementById('file-list');
+            const fileItems = document.getElementById('file-items');
+
+            fileItems.innerHTML = uploadedFiles.map((file, index) => `
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:0.5rem;border-bottom:1px solid var(--rule);">
+          <div style="display:flex;align-items:center;gap:0.5rem;">
+            <span style="font-size:0.875rem;font-weight:500;">${file.name}</span>
+            <span style="font-size:0.75rem;color:var(--ink-light);">(${formatFileSize(file.size)})</span>
+          </div>
+          <button onclick="removeFile(${index})" style="color:#dc2626;cursor:pointer;">×</button>
+        </div>
+      `).join('');
+
+            fileList.style.display = 'block';
+        }
+
+        function removeFile (index) {
+            uploadedFiles.splice(index, 1);
+            if (uploadedFiles.length === 0)
+            {
+                document.getElementById('file-list').style.display = 'none';
+                document.getElementById('data-preview').style.display = 'none';
+                document.getElementById('processing-status').style.display = 'none';
+                document.getElementById('import-btn').disabled = true;
+            } else
+            {
+                displayFileList();
+            }
+        }
+
+        function formatFileSize (bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        async function processFiles () {
+            const processingStatus = document.getElementById('processing-status');
+            const progressFill = document.getElementById('progress-fill');
+            const statusText = document.getElementById('status-text');
+            const importBtn = document.getElementById('import-btn');
+            const importStatus = document.getElementById('import-status');
+            const importMessage = document.getElementById('import-message');
+
+            processingStatus.style.display = 'block';
+            importStatus.style.display = 'none';
+            extractedData = [];
+            importBtn.disabled = true;
+            importBtn.textContent = 'Processing...';
+
+            for (let i = 0; i < uploadedFiles.length; i++)
+            {
+                const file = uploadedFiles[i];
+                const progress = ((i + 1) / uploadedFiles.length) * 100;
+                progressFill.style.width = progress + '%';
+                statusText.textContent = `Processing ${file.name}...`;
+
+                try
+                {
+                    if (file.type === 'application/pdf')
+                    {
+                        await processPDF(file);
+                    } else
+                    {
+                        await processExcel(file);
+                    }
+                } catch (error)
+                {
+                    console.error('Error processing file:', error);
+                    alert(`Error processing ${file.name}: ${error.message}`);
+                }
+            }
+
+            statusText.textContent = 'Processing complete! Importing data...';
+
+            // Automatically import the extracted data
+            if (extractedData.length > 0)
+            {
+                const importResult = await importData();
+                importMessage.textContent = importResult.message;
+                importStatus.style.display = 'block';
+                importBtn.textContent = 'Import Complete';
+                importBtn.style.background = 'linear-gradient(135deg,#059669,#047857)';
+            } else
+            {
+                importMessage.textContent = 'No student data could be extracted from the files.';
+                importStatus.style.display = 'block';
+                importBtn.textContent = 'No Data Found';
+                importBtn.disabled = true;
+            }
+
+            setTimeout(() => {
+                processingStatus.style.display = 'none';
+                displayExtractedData();
+            }, 1000);
+        }
+
+        async function processPDF (file) {
+            const arrayBuffer = await file.arrayBuffer();
+            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+
+            for (let pageNum = 1; pageNum <= Math.min(pdf.numPages, 20); pageNum++)
+            {
+                const page = await pdf.getPage(pageNum);
+                const textContent = await page.getTextContent();
+                const text = textContent.items.map(item => item.str).join(' ');
+
+                const studentsData = extractStudentDataFromText(text);
+                if (studentsData && studentsData.length > 0)
+                {
+                    extractedData.push(...studentsData);
+                }
+            }
+        }
+
+        async function processExcel (file) {
+            const arrayBuffer = await file.arrayBuffer();
+            const workbook = XLSX.read(arrayBuffer, { type: 'array' });
+
+            workbook.SheetNames.forEach(sheetName => {
+                const worksheet = workbook.Sheets[sheetName];
+                const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+                const studentData = extractStudentDataFromExcel(jsonData);
+                if (studentData.length > 0)
+                {
+                    extractedData.push(...studentData);
+                }
+            });
+        }
+
+        function extractStudentDataFromText (text) {
+            const lines = text.split('\n').map(line => line.trim()).filter(line => line);
+            const students = [];
+
+            // Look for student records (patterns like "Name:", "Student:", etc.)
+            let currentStudent = null;
+
+            lines.forEach(line => {
+                const lowerLine = line.toLowerCase();
+
+                // Check if this line starts a new student record
+                if (lowerLine.includes('name:') || lowerLine.includes('student:') ||
+                    (lowerLine.includes('name') && line.includes(':')))
+                {
+
+                    // Save previous student if exists
+                    if (currentStudent && currentStudent.name && currentStudent.class)
+                    {
+                        students.push(currentStudent);
+                    }
+
+                    // Start new student
+                    currentStudent = {
+                        name: '',
+                        class: '',
+                        term: '1st Term',
+                        subjects: []
+                    };
+
+                    // Extract name
+                    const nameMatch = line.match(/(?:name|student):\s*(.+)/i);
+                    if (nameMatch)
+                    {
+                        currentStudent.name = nameMatch[1].trim();
+                    }
+                }
+
+                // Extract other fields if we have a current student
+                if (currentStudent)
+                {
+                    if (lowerLine.includes('class:') || lowerLine.includes('grade:'))
+                    {
+                        const classMatch = line.match(/(?:class|grade):\s*(.+)/i);
+                        if (classMatch)
+                        {
+                            currentStudent.class = classMatch[1].trim();
+                        }
+                    } else if (lowerLine.includes('term:') || lowerLine.includes('semester:'))
+                    {
+                        const termMatch = line.match(/(?:term|semester):\s*(.+)/i);
+                        if (termMatch)
+                        {
+                            currentStudent.term = termMatch[1].trim();
+                        }
+                    } else
+                    {
+                        // Look for subject scores (patterns like "Math: 85", "English 90/100", etc.)
+                        const subjectPatterns = [
+                            /^([A-Za-z\s]+):\s*(\d+(?:\.\d+)?)/,  // "Math: 85"
+                            /^([A-Za-z\s]+)\s+(\d+(?:\.\d+)?)/,  // "Math 85"
+                            /^([A-Za-z\s]+)\s*\(\s*(\d+(?:\.\d+)?)/  // "Math (85"
+                        ];
+
+                        for (const pattern of subjectPatterns)
+                        {
+                            const match = line.match(pattern);
+                            if (match)
+                            {
+                                const subject = match[1].trim();
+                                const score = parseFloat(match[2]);
+                                if (!isNaN(score) && score >= 0 && score <= 100)
+                                {
+                                    currentStudent.subjects.push({
+                                        subject: subject,
+                                        score: score,
+                                        c: 0,
+                                        e: score
+                                    });
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Add the last student if exists
+            if (currentStudent && currentStudent.name && currentStudent.class)
+            {
+                students.push(currentStudent);
+            }
+
+            return students.length > 0 ? students : null;
+        }
+
+        function extractStudentDataFromExcel (data) {
+            const students = [];
+            let headers = [];
+            let dataStartRow = 0;
+
+            // Find header row (look for common header patterns)
+            for (let i = 0; i < Math.min(data.length, 5); i++)
+            {
+                const row = data[i];
+                if (row && row.length > 0)
+                {
+                    const rowText = row.join(' ').toLowerCase();
+                    if (rowText.includes('name') || rowText.includes('student') || rowText.includes('class'))
+                    {
+                        headers = row.map(h => h?.toString().toLowerCase().trim());
+                        dataStartRow = i + 1;
+                        break;
+                    }
+                }
+            }
+
+            // If no headers found, assume first row is headers
+            if (headers.length === 0 && data.length > 0)
+            {
+                headers = data[0].map(h => h?.toString().toLowerCase().trim());
+                dataStartRow = 1;
+            }
+
+            // Process data rows
+            for (let i = dataStartRow; i < data.length; i++)
+            {
+                const row = data[i];
+                if (!row || row.length === 0 || row.every(cell => !cell)) continue;
+
+                const student = {
+                    name: '',
+                    class: '',
+                    term: '1st Term',
+                    subjects: []
+                };
+
+                // Map columns to student data
+                headers.forEach((header, colIndex) => {
+                    const value = row[colIndex]?.toString().trim();
+                    if (!value) return;
+
+                    if (header.includes('name') || header.includes('student'))
+                    {
+                        student.name = value;
+                    } else if (header.includes('class') || header.includes('grade'))
+                    {
+                        student.class = value;
+                    } else if (header.includes('term') || header.includes('semester'))
+                    {
+                        student.term = value;
+                    }
+                });
+
+                // Look for subject columns (patterns like "Math", "English", etc.)
+                const subjectColumns = [];
+                headers.forEach((header, colIndex) => {
+                    if (header && !header.includes('name') && !header.includes('class') && !header.includes('term') &&
+                        !header.includes('student') && !header.includes('grade') && !header.includes('semester'))
+                    {
+                        subjectColumns.push({ name: header, index: colIndex });
+                    }
+                });
+
+                // Extract subject scores
+                subjectColumns.forEach(subjCol => {
+                    const score = parseFloat(row[subjCol.index]?.toString().trim());
+                    if (!isNaN(score))
+                    {
+                        student.subjects.push({
+                            subject: subjCol.name,
+                            score: score,
+                            c: 0, // Default values, can be updated if more detailed data available
+                            e: score
+                        });
+                    }
+                });
+
+                // If no subjects found in columns, try to find score patterns in the row
+                if (student.subjects.length === 0)
+                {
+                    row.forEach((cell, colIndex) => {
+                        const cellValue = cell?.toString().trim();
+                        if (cellValue && !isNaN(parseFloat(cellValue)) && parseFloat(cellValue) >= 0 && parseFloat(cellValue) <= 100)
+                        {
+                            const score = parseFloat(cellValue);
+                            // Try to find subject name from nearby cells or use generic name
+                            let subjectName = `Subject ${colIndex + 1}`;
+                            if (colIndex > 0 && row[colIndex - 1] && isNaN(parseFloat(row[colIndex - 1])))
+                            {
+                                subjectName = row[colIndex - 1].toString().trim();
+                            }
+                            student.subjects.push({
+                                subject: subjectName,
+                                score: score,
+                                c: 0,
+                                e: score
+                            });
+                        }
+                    });
+                }
+
+                if (student.name && student.class && student.subjects.length > 0)
+                {
+                    students.push(student);
+                }
+            }
+
+            return students;
+        }
+
+        function displayExtractedData () {
+            const dataPreview = document.getElementById('data-preview');
+            const studentDataDiv = document.getElementById('student-data');
+            const importBtn = document.getElementById('import-btn');
+
+            if (extractedData.length === 0)
+            {
+                studentDataDiv.innerHTML = '<p style="color:var(--ink-light);">No student data could be extracted from the files. Please check the file format and try again.</p>';
+                importBtn.disabled = true;
+                importBtn.textContent = 'No Data Found';
+            } else
+            {
+                studentDataDiv.innerHTML = extractedData.map((student, index) => `
+          <div style="border:1px solid var(--rule);border-radius:8px;padding:1rem;margin-bottom:1rem;background:var(--bg-light);">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.5rem;">
+              <div>
+                <h5 style="font-weight:600;font-size:1.125rem;">${student.name}</h5>
+                <p style="font-size:0.875rem;color:var(--ink-light);">Class: ${student.class} | Term: ${student.term}</p>
+              </div>
+              <button onclick="removeStudent(${index})" style="color:#dc2626;cursor:pointer;font-size:1.125rem;">×</button>
+            </div>
+            ${student.subjects.length > 0 ? `
+              <div style="margin-top:0.75rem;">
+                <h6 style="font-weight:500;font-size:0.875rem;margin-bottom:0.5rem;">Subjects:</h6>
+                <div style="display:flex;flex-direction:column;gap:0.25rem;">
+                  ${student.subjects.map(subject => `
+                    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:0.5rem;align-items:center;padding:0.125rem 0;border-bottom:1px solid var(--rule);font-size:0.75rem;">
+                      <span style="font-weight:500;">${subject.subject}</span>
+                      <span>Class: ${subject.c}</span>
+                      <span>Exam: ${subject.e}</span>
+                      <span style="font-weight:700;">Total: ${subject.score}</span>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            ` : '<p style="font-size:0.875rem;color:var(--ink-light);">No subjects found</p>'}
+          </div>
+        `).join('');
+
+                // Button is already enabled and shows "Process & Import"
+            }
+
+            dataPreview.style.display = 'block';
+        }
+
+        function removeStudent (index) {
+            extractedData.splice(index, 1);
+            displayExtractedData();
+        }
+
+        function importData () {
+            return new Promise((resolve) => {
+                if (extractedData.length === 0)
+                {
+                    resolve({ success: false, message: 'No data to import.' });
+                    return;
+                }
+
+                const existingStudents = JSON.parse(localStorage.getItem('gw_students') || '[]');
+                let newStudentsCount = 0;
+                let updatedStudentsCount = 0;
+
+                extractedData.forEach(newStudent => {
+                    const existingIndex = existingStudents.findIndex(s =>
+                        s.name.toLowerCase() === newStudent.name.toLowerCase() &&
+                        s.class === newStudent.class
+                    );
+
+                    if (existingIndex === -1)
+                    {
+                        // New student
+                        if (newStudent.subjects.length > 0)
+                        {
+                            const total = newStudent.subjects.reduce((sum, subj) => sum + (subj.score || 0), 0);
+                            newStudent.avg = (total / newStudent.subjects.length).toFixed(1);
+                        }
+                        existingStudents.push(newStudent);
+                        newStudentsCount++;
+                    } else
+                    {
+                        // Update existing student
+                        const existing = existingStudents[existingIndex];
+                        if (newStudent.subjects.length > 0)
+                        {
+                            // Merge subjects - keep existing ones and add new ones
+                            newStudent.subjects.forEach(newSubj => {
+                                const existingSubjIndex = existing.subjects.findIndex(s =>
+                                    s.subject.toLowerCase() === newSubj.subject.toLowerCase()
+                                );
+                                if (existingSubjIndex === -1)
+                                {
+                                    existing.subjects.push(newSubj);
+                                } else
+                                {
+                                    // Update existing subject scores
+                                    existing.subjects[existingSubjIndex] = newSubj;
+                                }
+                            });
+
+                            // Recalculate average
+                            const total = existing.subjects.reduce((sum, subj) => sum + (subj.score || 0), 0);
+                            existing.avg = (total / existing.subjects.length).toFixed(1);
+                        }
+                        updatedStudentsCount++;
+                    }
+                });
+
+                localStorage.setItem('gw_students', JSON.stringify(existingStudents));
+
+                let message = '';
+                if (newStudentsCount > 0 && updatedStudentsCount > 0)
+                {
+                    message = `Added ${newStudentsCount} new students and updated ${updatedStudentsCount} existing students.`;
+                } else if (newStudentsCount > 0)
+                {
+                    message = `Successfully added ${newStudentsCount} new students!`;
+                } else if (updatedStudentsCount > 0)
+                {
+                    message = `Successfully updated ${updatedStudentsCount} existing students!`;
+                } else
+                {
+                    message = 'All students were already in the database.';
+                }
+
+                resolve({ success: true, message: message, newCount: newStudentsCount, updatedCount: updatedStudentsCount });
+            });
+        }
+
+        function clearAll () {
+            uploadedFiles = [];
+            extractedData = [];
+            document.getElementById('file-list').style.display = 'none';
+            document.getElementById('data-preview').style.display = 'none';
+            document.getElementById('processing-status').style.display = 'none';
+            document.getElementById('import-status').style.display = 'none';
+            document.getElementById('import-btn').disabled = true;
+            document.getElementById('import-btn').textContent = 'Process & Import';
+            document.getElementById('file-input').value = '';
+        }
+
+        // Init
+        init();
+    </script>
+</body>
+
+</html>
+e.preventDefault();
+uploadZone.classList.add('dragover');
+});
+uploadZone.addEventListener('dragleave', () => {
+uploadZone.classList.remove('dragover');
+});
+uploadZone.addEventListener('drop', (e) => {
+e.preventDefault();
+uploadZone.classList.remove('dragover');
+const files = Array.from(e.dataTransfer.files);
+handleFiles(files);
+});
+
+fileInput.addEventListener('change', (e) => {
+const files = Array.from(e.target.files);
+handleFiles(files);
+});
+
+function handleFiles (files) {
+const validFiles = files.filter(file => {
+const ext = file.name.split('.').pop().toLowerCase();
+return ['pdf', 'xlsx', 'xls'].includes(ext);
+});
+
+if (validFiles.length === 0)
+{
+alert('Please select valid PDF or Excel files.');
+return;
+}
+
+uploadedFiles = validFiles;
+displayFileList();
+processFiles();
+}
+
+function displayFileList () {
+const fileList = document.getElementById('file-list');
+const fileItems = document.getElementById('file-items');
+
+fileItems.innerHTML = uploadedFiles.map((file, index) => `
+<div class="file-item">
+    <div class="flex items-center gap-2">
+        <span class="text-sm font-medium">${file.name}</span>
+        <span class="text-xs text-gray-500">(${formatFileSize(file.size)})</span>
+    </div>
+    <button onclick="removeFile(${index})" class="text-red-500 hover:text-red-700">×</button>
+</div>
+`).join('');
+
+fileList.classList.remove('hidden');
+}
+
+function removeFile (index) {
+uploadedFiles.splice(index, 1);
+if (uploadedFiles.length === 0)
+{
+document.getElementById('file-list').classList.add('hidden');
+document.getElementById('data-preview').classList.add('hidden');
+document.getElementById('processing-status').classList.add('hidden');
+document.getElementById('import-btn').disabled = true;
+} else
+{
+displayFileList();
+}
+}
+
+function formatFileSize (bytes) {
+if (bytes === 0) return '0 Bytes';
+const k = 1024;
+const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+const i = Math.floor(Math.log(bytes) / Math.log(k));
+return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
+
+async function processFiles () {
+const processingStatus = document.getElementById('processing-status');
+const progressFill = document.getElementById('progress-fill');
+const statusText = document.getElementById('status-text');
+
+processingStatus.classList.remove('hidden');
+extractedData = [];
+
+for (let i = 0; i < uploadedFiles.length; i++) { const file=uploadedFiles[i]; const progress=((i + 1) /
+    uploadedFiles.length) * 100; progressFill.style.width=progress + '%' ; statusText.textContent=`Processing
+    ${file.name}...`; try { if (file.type==='application/pdf' ) { await processPDF(file); } else { await
+    processExcel(file); } } catch (error) { console.error('Error processing file:', error); alert(`Error processing
+    ${file.name}: ${error.message}`); } } statusText.textContent='Processing complete!' ; setTimeout(()=> {
+    processingStatus.classList.add('hidden');
+    displayExtractedData();
+    }, 1000);
+    }
+
+    async function processPDF (file) {
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+
+    for (let pageNum = 1; pageNum <= Math.min(pdf.numPages, 10); pageNum++) { const page=await pdf.getPage(pageNum);
+        const textContent=await page.getTextContent(); const text=textContent.items.map(item=> item.str).join(' ');
+
+        // Try to extract student data from text
+        const studentData = extractStudentDataFromText(text);
+        if (studentData)
+        {
+        extractedData.push(studentData);
+        }
+        }
+        }
+
+        async function processExcel (file) {
+        const arrayBuffer = await file.arrayBuffer();
+        const workbook = XLSX.read(arrayBuffer, { type: 'array' });
+
+        // Process each worksheet
+        workbook.SheetNames.forEach(sheetName => {
+        const worksheet = workbook.Sheets[sheetName];
+        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+        // Try to identify student data structure
+        const studentData = extractStudentDataFromExcel(jsonData);
+        if (studentData.length > 0)
+        {
+        extractedData.push(...studentData);
+        }
+        });
+        }
+
+        function extractStudentDataFromText (text) {
+        // This is a simplified extraction - in a real implementation,
+        // you'd use more sophisticated parsing logic
+        const lines = text.split('\n').map(line => line.trim()).filter(line => line);
+
+        // Look for patterns like "Name: John Doe", "Class: Basic 6", etc.
+        const student = {
+        name: '',
+        class: '',
+        term: '1st Term',
+        subjects: []
+        };
+
+        lines.forEach(line => {
+        if (line.toLowerCase().includes('name:'))
+        {
+        student.name = line.split(':')[1]?.trim() || '';
+        } else if (line.toLowerCase().includes('class:'))
+        {
+        student.class = line.split(':')[1]?.trim() || '';
+        } else if (line.toLowerCase().includes('term:'))
+        {
+        student.term = line.split(':')[1]?.trim() || '1st Term';
+        }
+        });
+
+        return student.name && student.class ? student : null;
+        }
+
+        function extractStudentDataFromExcel (data) {
+        const students = [];
+        let headers = [];
+
+        data.forEach((row, index) => {
+        if (index === 0)
+        {
+        // First row is headers
+        headers = row.map(h => h?.toString().toLowerCase().trim());
+        } else if (row.length > 0)
+        {
+        const student = {
+        name: '',
+        class: '',
+        term: '1st Term',
+        subjects: []
+        };
+
+        // Map columns to student data
+        headers.forEach((header, colIndex) => {
+        const value = row[colIndex]?.toString().trim();
+        if (header.includes('name'))
+        {
+        student.name = value;
+        } else if (header.includes('class'))
+        {
+        student.class = value;
+        } else if (header.includes('term'))
+        {
+        student.term = value;
+        } else if (header.includes('subject') && value)
+        {
+        // This is a simplified subject extraction
+        student.subjects.push({
+        name: value,
+        c: row[colIndex + 1] || 0,
+        e: row[colIndex + 2] || 0,
+        total: row[colIndex + 3] || 0
+        });
+        }
+        });
+
+        if (student.name && student.class)
+        {
+        students.push(student);
+        }
+        }
+        });
+
+        return students;
+        }
+
+        function displayExtractedData () {
+        const dataPreview = document.getElementById('data-preview');
+        const studentDataDiv = document.getElementById('student-data');
+        const importBtn = document.getElementById('import-btn');
+
+        if (extractedData.length === 0)
+        {
+        studentDataDiv.innerHTML = '<p class="text-gray-500">No student data could be extracted from the files. Please
+            check the file format and try again.</p>';
+        importBtn.disabled = true;
+        } else
+        {
+        studentDataDiv.innerHTML = extractedData.map((student, index) => `
+        <div class="student-card">
+            <div class="flex justify-between items-start mb-2">
+                <div>
+                    <h5 class="font-semibold text-lg">${student.name}</h5>
+                    <p class="text-sm text-gray-600">Class: ${student.class} | Term: ${student.term}</p>
+                </div>
+                <button onclick="removeStudent(${index})" class="text-red-500 hover:text-red-700 text-lg">×</button>
+            </div>
+            ${student.subjects.length > 0 ? `
+            <div class="mt-3">
+                <h6 class="font-medium text-sm mb-2">Subjects:</h6>
+                <div class="space-y-1">
+                    ${student.subjects.map(subject => `
+                    <div class="subject-row text-xs">
+                        <span class="font-medium">${subject.name}</span>
+                        <span>Class: ${subject.c}</span>
+                        <span>Exam: ${subject.e}</span>
+                        <span class="font-bold">Total: ${subject.total}</span>
+                    </div>
+                    `).join('')}
+                </div>
+            </div>
+            ` : '<p class="text-sm text-gray-500">No subjects found</p>'}
+        </div>
+        `).join('');
+
+        importBtn.disabled = false;
+        }
+
+        dataPreview.classList.remove('hidden');
+        }
+
+        function removeStudent (index) {
+        extractedData.splice(index, 1);
+        displayExtractedData();
+        }
+
+        function importData () {
+        if (extractedData.length === 0)
+        {
+        alert('No data to import.');
+        return;
+        }
+
+        // Get existing students
+        const existingStudents = JSON.parse(localStorage.getItem('gw_students') || '[]');
+
+        // Add new students (avoid duplicates)
+        extractedData.forEach(newStudent => {
+        const exists = existingStudents.find(s =>
+        s.name.toLowerCase() === newStudent.name.toLowerCase() &&
+        s.class === newStudent.class
+        );
+
+        if (!exists)
+        {
+        // Calculate average if subjects exist
+        if (newStudent.subjects.length > 0)
+        {
+        const total = newStudent.subjects.reduce((sum, subj) => sum + (subj.total || 0), 0);
+        newStudent.avg = (total / newStudent.subjects.length).toFixed(1);
+        }
+
+        existingStudents.push(newStudent);
+        }
+        });
+
+        // Save to localStorage
+        localStorage.setItem('gw_students', JSON.stringify(existingStudents));
+
+        alert(`Successfully imported ${extractedData.length} student records!`);
+        window.location.href = 'gradewise-pro.html';
+        }
+
+        function clearAll () {
+        uploadedFiles = [];
+        extractedData = [];
+        document.getElementById('file-list').classList.add('hidden');
+        document.getElementById('data-preview').classList.add('hidden');
+        document.getElementById('processing-status').classList.add('hidden');
+        document.getElementById('import-btn').disabled = true;
+        document.getElementById('file-input').value = '';
+        }
+        </script>
+        </body>
+
+        </html>

@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Report Editor - GradeWise Pro</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .ai-editor-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            height: calc(100vh - 120px);
+            padding: 20px;
+        }
+
+        .editor-panel {
+            display: flex;
+            flex-direction: column;
+            background: var(--paper);
+            border-radius: 10px;
+            border: 1px solid var(--rule);
+            overflow: hidden;
+        }
+
+        .editor-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--rule);
+            background: linear-gradient(135deg, var(--paper-dark), var(--paper));
+        }
+
+        .editor-header h3 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--ink);
+            margin: 0;
+        }
+
+        .editor-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 20px;
+        }
+
+        .editor-footer {
+            padding: 12px 20px;
+            border-top: 1px solid var(--rule);
+            display: flex;
+            gap: 8px;
+            background: var(--paper-dark);
+        }
+
+        .edit-section {
+            margin-bottom: 20px;
+        }
+
+        .edit-section label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 6px;
+        }
+
+        .edit-section textarea,
+        .edit-section input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            font-family: 'DM Mono', monospace;
+            font-size: 12px;
+            color: var(--ink);
+            background: white;
+        }
+
+        .edit-section textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .ai-prompt-section {
+            background: linear-gradient(135deg, #0f1117, #1e2540);
+            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid rgba(201, 146, 42, 0.2);
+        }
+
+        .ai-prompt-section textarea {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--gold-light);
+            border-color: rgba(201, 146, 42, 0.3);
+            font-size: 11px;
+        }
+
+        .ai-prompt-section textarea::placeholder {
+            color: rgba(201, 146, 42, 0.5);
+        }
+
+        .loader {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--muted);
+            padding: 12px;
+        }
+
+        .loader span {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background: var(--gold);
+            border-radius: 50%;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .loader span:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+
+        .loader span:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 0.3;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        .comparison-view {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .comparison-box {
+            padding: 12px;
+            border-radius: 6px;
+            background: var(--paper-dark);
+            border: 1px solid var(--rule);
+            font-size: 12px;
+            line-height: 1.6;
+            color: var(--ink);
+        }
+
+        .comparison-box h4 {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 8px;
+        }
+
+        .diff-added {
+            background: #d4f0e4;
+            color: var(--emerald);
+            padding: 2px 4px;
+            border-radius: 2px;
+        }
+
+        .diff-removed {
+            background: #fde8e8;
+            color: var(--crimson);
+            padding: 2px 4px;
+            border-radius: 2px;
+            text-decoration: line-through;
+        }
+
+        .controls-bar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .control-group {
+            display: flex;
+            gap: 6px;
+        }
+
+        .control-group label {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .control-group input[type="checkbox"],
+        .control-group input[type="radio"] {
+            cursor: pointer;
+        }
+
+        .section-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid var(--rule);
+            padding-bottom: 8px;
+        }
+
+        .section-tab {
+            padding: 6px 12px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--muted);
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .section-tab.active {
+            color: var(--gold);
+            border-bottom-color: var(--gold);
+        }
+
+        .section-tab:hover {
+            color: var(--ink);
+        }
+    </style>
+</head>
+
+<body style="background: var(--paper);overflow:hidden;">
+
+    <main class="main" style="margin-left:0;padding:0;height:100vh;">
+        <div class="ai-editor-container">
+            <!-- Original Report Panel -->
+            <div class="editor-panel">
+                <div class="editor-header">
+                    <h3>📋 Original Report</h3>
+                </div>
+                <div class="editor-body" id="original-report">
+                    <div style="text-align:center;color:var(--muted);padding:40px 20px;">
+                        Select a report to view
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Editor Panel -->
+            <div class="editor-panel">
+                <div class="editor-header">
+                    <h3>✦ AI-Powered Editor</h3>
+                </div>
+                <div class="editor-body">
+                    <!-- Section Tabs -->
+                    <div class="section-tabs">
+                        <button class="section-tab active" onclick="switchSection('remarks')">Remarks</button>
+                        <button class="section-tab" onclick="switchSection('grades')">Grades</button>
+                        <button class="section-tab" onclick="switchSection('stats')">Stats</button>
+                    </div>
+
+                    <!-- AI Prompt -->
+                    <div class="edit-section">
+                        <label>AI Prompt / Instruction</label>
+                        <div class="ai-prompt-section">
+                            <textarea id="ai-prompt"
+                                placeholder="e.g., Make the teacher's remarks more encouraging and constructive. Highlight areas of improvement."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Tone & Style Options -->
+                    <div class="edit-section">
+                        <label>Style & Tone</label>
+                        <div class="controls-bar">
+                            <div class="control-group">
+                                <input type="radio" id="tone-formal" name="tone" value="formal" checked>
+                                <label for="tone-formal">Formal</label>
+                            </div>
+                            <div class="control-group">
+                                <input type="radio" id="tone-warm" name="tone" value="warm">
+                                <label for="tone-warm">Warm</label>
+                            </div>
+                            <div class="control-group">
+                                <input type="radio" id="tone-concise" name="tone" value="concise">
+                                <label for="tone-concise">Concise</label>
+                            </div>
+                            <div class="control-group">
+                                <input type="radio" id="tone-detailed" name="tone" value="detailed">
+                                <label for="tone-detailed">Detailed</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Original Value -->
+                    <div class="edit-section">
+                        <label id="edit-label">Current Remark</label>
+                        <textarea id="edit-original" readonly></textarea>
+                    </div>
+
+                    <!-- AI Loader -->
+                    <div id="ai-loader" style="display:none;">
+                        <div class="loader">
+                            <span></span><span></span><span></span>
+                            Generating AI suggestion...
+                        </div>
+                    </div>
+
+                    <!-- Generated Value -->
+                    <div class="edit-section" id="edit-generated-section" style="display:none;">
+                        <label>AI Suggestion</label>
+                        <textarea id="edit-generated" readonly></textarea>
+                    </div>
+                </div>
+                <div class="editor-footer">
+                    <button class="btn btn-sm btn-outline" onclick="generateAIEdit()">✦ Generate</button>
+                    <button class="btn btn-sm" style="background:var(--emerald);color:#fff;" onclick="applyEdit()"
+                        id="apply-btn" style="display:none;">✓ Apply</button>
+                    <button class="btn btn-sm btn-outline" onclick="resetEditor()">↻ Reset</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="gradewise-pro.js"></script>
+    <script>
+        let currentStudent = null;
+        let currentEditField = 'remarks';
+        let aiGeneratedValue = '';
+
+        function switchSection (section) {
+            currentEditField = section;
+            document.querySelectorAll('.section-tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const labels = {
+                remarks: 'Current Remark',
+                grades: 'Grade Analysis',
+                stats: 'Performance Stats'
+            };
+
+            document.getElementById('edit-label').textContent = labels[section];
+
+            if (currentStudent)
+            {
+                updateEditDisplay(currentStudent);
+            }
+        }
+
+        function updateEditDisplay (student) {
+            let value = '';
+
+            switch (currentEditField)
+            {
+                case 'remarks':
+                    value = student.remarks || 'No remarks recorded.';
+                    break;
+                case 'grades':
+                    const avg = student.avg;
+                    const grade = getGrade && getGrade(avg) || 'N/A';
+                    value = `Average: ${avg}% (Grade ${grade})\nSubjects: ${student.subjects?.length || 0}`;
+                    break;
+                case 'stats':
+                    const best = student.subjects?.reduce((a, b) => a.score > b.score ? a : b, {}) || {};
+                    const worst = student.subjects?.reduce((a, b) => a.score < b.score ? a : b, {}) || {};
+                    value = `Best: ${best.subject} (${best.score}%)\nNeeds Work: ${worst.subject} (${worst.score}%)\nClass: ${student.class}`;
+                    break;
+            }
+
+            document.getElementById('edit-original').value = value;
+            document.getElementById('edit-generated-section').style.display = 'none';
+            document.getElementById('apply-btn').style.display = 'none';
+        }
+
+        async function generateAIEdit () {
+            if (!currentStudent || !localStorage.getItem('gw_settings')) return;
+
+            const settings = JSON.parse(localStorage.getItem('gw_settings'));
+            if (!settings.apiKey)
+            {
+                alert('API key not configured. Go to Settings → AI Configuration');
+                return;
+            }
+
+            const prompt = document.getElementById('ai-prompt').value;
+            const tone = document.querySelector('input[name="tone"]:checked').value;
+
+            if (!prompt.trim())
+            {
+                alert('Please enter an AI instruction or prompt.');
+                return;
+            }
+
+            document.getElementById('ai-loader').style.display = 'block';
+
+            try
+            {
+                const original = document.getElementById('edit-original').value;
+                const fullPrompt = `You are an educational AI assistant. The user wants to ${prompt}
+                
+Original text:
+${original}
+
+Tone: ${tone}
+
+Generate only the modified text, nothing else. Be concise and professional.`;
+
+                const response = await fetch('https://api.anthropic.com/v1/messages', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-api-key': settings.apiKey,
+                        'anthropic-version': '2023-06-01',
+                        'anthropic-dangerous-direct-browser-access': 'true'
+                    },
+                    body: JSON.stringify({
+                        model: 'claude-sonnet-4-20250514',
+                        max_tokens: 400,
+                        messages: [{ role: 'user', content: fullPrompt }]
+                    })
+                });
+
+                const data = await response.json();
+                aiGeneratedValue = data.content?.[0]?.text?.trim() || '';
+
+                document.getElementById('edit-generated').value = aiGeneratedValue;
+                document.getElementById('edit-generated-section').style.display = 'block';
+                document.getElementById('apply-btn').style.display = 'block';
+
+            } catch (error)
+            {
+                alert('Error generating AI edit: ' + error.message);
+            } finally
+            {
+                document.getElementById('ai-loader').style.display = 'none';
+            }
+        }
+
+        function applyEdit () {
+            if (!currentStudent || !aiGeneratedValue) return;
+
+            switch (currentEditField)
+            {
+                case 'remarks':
+                    currentStudent.remarks = aiGeneratedValue;
+                    break;
+                case 'grades':
+                    // For grades, allow inline editing
+                    break;
+            }
+
+            // Save student changes
+            if (window.students && Array.isArray(window.students))
+            {
+                const idx = window.students.findIndex(s => s.id === currentStudent.id);
+                if (idx >= 0)
+                {
+                    window.students[idx] = currentStudent;
+                    localStorage.setItem('gw_students', JSON.stringify(window.students));
+                }
+            }
+
+            alert('✓ Changes applied to student report!');
+            resetEditor();
+        }
+
+        function resetEditor () {
+            document.getElementById('ai-prompt').value = '';
+            document.getElementById('edit-generated-section').style.display = 'none';
+            document.getElementById('apply-btn').style.display = 'none';
+            aiGeneratedValue = '';
+        }
+
+        // Load student on init
+        window.addEventListener('message', (event) => {
+            if (event.data.type === 'LOAD_STUDENT')
+            {
+                currentStudent = event.data.student;
+                updateEditDisplay(currentStudent);
+                document.getElementById('original-report').innerHTML = `
+                    <div style="padding: 16px;">
+                        <h4 style="font-weight:700;margin-bottom:12px;">${currentStudent.name}</h4>
+                        <div style="font-size:12px;color:var(--muted);line-height:1.8;">
+                            <div><strong>Class:</strong> ${currentStudent.class}</div>
+                            <div><strong>Average:</strong> ${currentStudent.avg}%</div>
+                            <div><strong>Term:</strong> ${currentStudent.term}</div>
+                            <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--rule);">
+                                <strong>Remarks:</strong><br>
+                                ${currentStudent.remarks || '<em style="color:var(--muted);">No remarks</em>'}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        });
+    </script>
+</body>
+
+</html>

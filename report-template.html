@@ -1,0 +1,144 @@
+function buildReportCard(s) {
+// Check for imported templates first
+if(currentTemplate.startsWith('imported:')) {
+const tplId = currentTemplate.replace('imported:','');
+const tpl = importedTemplates.find(t => t.id === tplId);
+if(tpl) return renderImportedTemplate(tpl.html, s);
+}
+
+// Calculate class position and totals
+const { pos } = calcPosition(s);
+const posOrdinal = getOrdinal(pos);
+const totalStudents = students.filter(c => c.class === s.class).length;
+const grandTotal = s.subjects.reduce((a, b) => a + b.score, 0);
+
+// Generate subject rows based on the reference image layout
+const subjectRows = s.subjects.map(sub => `
+<tr>
+    <td class="font-bold uppercase py-2 px-2 border-2 border-[#1e40af] text-[#1e40af]">${sub.subject}</td>
+    <td class="border-2 border-[#1e40af] text-center font-semibold">—</td>
+    <td class="border-2 border-[#1e40af] text-center font-semibold">—</td>
+    <td class="border-2 border-[#1e40af] text-center font-bold text-[#1e40af]">${sub.score}</td>
+    <td class="border-2 border-[#1e40af] text-center font-semibold">—</td>
+    <td class="border-2 border-[#1e40af] italic text-[10px] px-2">${getRemarkForScore(sub.score)}</td>
+</tr>`).join('');
+
+return `
+<div class="report-card mx-auto shadow-none border-[#1e40af]" id="printable-report"
+    style="width: 210mm; min-height: 297mm; padding: 15mm; border: 2px solid #1e40af; background: white;">
+    <div class="content relative">
+        <div class="text-center mb-4">
+            <div class="flex items-center justify-between mb-2">
+                <img src="${settings.logoData || ''}" class="w-24 h-24 object-contain">
+                <div class="flex-1">
+                    <h1 class="text-4xl font-black text-[#dc2626] tracking-tighter uppercase mb-1">${settings.schoolName
+                        || 'NEW TESTAMENT BAPTIST ACADEMY'}</h1>
+                    <p class="text-[11px] font-bold text-[#1e40af]">Address: P.O. Box 15783</p>
+                    <p class="text-[11px] font-bold text-[#1e40af]">Location: Afarncho-Bronkrong (Red Park)</p>
+                    <p class="text-[11px] font-bold text-[#1e40af]">Tel: +233 24 127 8727 / +233 24 427 9458</p>
+                </div>
+            </div>
+            <div class="h-[2px] bg-[#dc2626] w-full mb-3"></div>
+            <div class="bg-[#1e40af] text-white py-2 w-full rounded-md shadow-sm">
+                <h2 class="text-xl font-bold uppercase tracking-[0.2em]">PUPIL'S TERMINAL REPORT</h2>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-x-8 gap-y-3 mb-4 text-[13px] text-black">
+            <div class="col-span-2 flex items-end gap-2">
+                <span class="font-bold text-[#1e40af]">Name:</span>
+                <div class="dotted-line uppercase border-b border-black flex-1">${s.name}</div>
+            </div>
+            <div class="flex items-end gap-2">
+                <span class="font-bold text-[#1e40af]">Academic Year:</span>
+                <div class="dotted-line border-b border-black flex-1">20${s.year.split('/')[0] || ''} /
+                    20${s.year.split('/')[1] || ''}</div>
+            </div>
+            <div class="flex items-end gap-2">
+                <span class="font-bold text-[#1e40af]">Class:</span>
+                <div class="dotted-line border-b border-black flex-1">${s.class}</div>
+            </div>
+            <div class="flex items-end gap-2">
+                <span class="font-bold text-[#1e40af]">Term:</span>
+                <div class="dotted-line border-b border-black flex-1">${s.term}</div>
+            </div>
+            <div class="flex items-end gap-2">
+                <span class="font-bold text-[#1e40af]">No. on Roll:</span>
+                <div class="dotted-line border-b border-black flex-1 text-center">${totalStudents}</div>
+            </div>
+            <div class="flex items-end gap-2">
+                <span class="font-bold text-[#1e40af]">Position:</span>
+                <div class="dotted-line border-b border-black flex-1 text-center">${posOrdinal}</div>
+            </div>
+            <div class="flex items-end gap-2">
+                <span class="font-bold text-[#1e40af]">Closing Date:</span>
+                <div class="dotted-line border-b border-black flex-1"></div>
+            </div>
+            <div class="col-span-2 flex items-end gap-2">
+                <span class="font-bold text-[#1e40af]">Next Term Begins:</span>
+                <div class="dotted-line border-b border-black flex-1"></div>
+            </div>
+        </div>
+
+        <div class="relative mb-4">
+            <div class="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none z-0">
+                <img src="${settings.logoData || ''}" class="w-64 h-64 grayscale">
+            </div>
+
+            <table class="w-full border-collapse border-2 border-[#1e40af] text-[11px] relative z-10 bg-transparent">
+                <thead>
+                    <tr class="text-[#1e40af] bg-gray-50">
+                        <th class="border-2 border-[#1e40af] p-2 text-left w-[35%]">SUBJECT</th>
+                        <th class="border-2 border-[#1e40af] p-1 text-center">CLASS SCORE<br>50%</th>
+                        <th class="border-2 border-[#1e40af] p-1 text-center">EXAM SCORE<br>50%</th>
+                        <th class="border-2 border-[#1e40af] p-1 text-center">TOTAL SCORE<br>100%</th>
+                        <th class="border-2 border-[#1e40af] p-1 text-center">POSITION IN<br>SUBJECT</th>
+                        <th class="border-2 border-[#1e40af] p-1 text-center">REMARKS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${subjectRows}
+                    <tr class="font-bold text-[#1e40af] bg-gray-50">
+                        <td colspan="3" class="border-2 border-[#1e40af] text-center p-2">GRAND TOTAL:</td>
+                        <td class="border-2 border-[#1e40af] text-center">${grandTotal}</td>
+                        <td colspan="2" class="border-2 border-[#1e40af]"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="space-y-4 text-[12px] text-black">
+            <div class="flex gap-4">
+                <div class="flex-1 flex items-end gap-2"><span class="font-bold text-[#1e40af]">Attendance:</span>
+                    <div class="dotted-line border-b border-black flex-1"></div>
+                </div>
+                <div class="flex-1 flex items-end gap-2"><span class="font-bold text-[#1e40af]">Out of:</span>
+                    <div class="dotted-line border-b border-black flex-1"></div>
+                </div>
+                <div class="flex-1 flex items-end gap-2"><span class="font-bold text-[#1e40af]">Promoted To:</span>
+                    <div class="dotted-line border-b border-black flex-1"></div>
+                </div>
+            </div>
+            <div class="flex items-end gap-2"><span class="font-bold text-[#1e40af]">Attitude:</span>
+                <div class="dotted-line border-b border-black flex-1"></div>
+            </div>
+            <div class="flex items-end gap-2"><span class="font-bold text-[#1e40af]">Interest:</span>
+                <div class="dotted-line border-b border-black flex-1"></div>
+            </div>
+            <div class="flex items-end gap-2"><span class="font-bold text-[#1e40af]">Class Teacher's Remarks:</span>
+                <div class="dotted-line border-b border-black flex-1 italic">${s.remarks || ''}</div>
+            </div>
+            <div class="flex items-end gap-2"><span class="font-bold text-[#1e40af]">Head Teacher's Remarks:</span>
+                <div class="dotted-line border-b border-black flex-1 italic"></div>
+            </div>
+
+            <div class="flex justify-between mt-12">
+                <div class="w-[45%] text-center border-t border-black pt-1 font-bold text-[#1e40af] text-[10px]">Class
+                    Teacher's Signature</div>
+                <div class="w-[45%] text-center border-t border-black pt-1 font-bold text-[#1e40af] text-[10px]">Head
+                    Teacher's Signature & Stamp</div>
+            </div>
+        </div>
+    </div>
+</div>`;
+}

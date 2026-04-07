@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Settings - GradeWise Pro</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- MOBILE SIDEBAR TOGGLE -->
+    <button class="sidebar-toggle" id="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+    <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+                <div>
+                    <div class="brand-name">GradeWise Pro</div>
+                    <div class="brand-sub">Terminal Report Studio</div>
+                </div>
+                <button onclick="closeSidebar()"
+                    style="display:none;background:none;border:none;color:rgba(255,255,255,0.4);font-size:20px;cursor:pointer;"
+                    id="sidebar-close">×</button>
+            </div>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="nav-section-label">Overview</div>
+            <div class="nav-item" onclick="window.location.href='gradewise-pro.html'">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <rect x="3" y="3" width="7" height="7" />
+                    <rect x="14" y="3" width="7" height="7" />
+                    <rect x="3" y="14" width="7" height="7" />
+                    <rect x="14" y="14" width="7" height="7" />
+                </svg>
+                Dashboard
+            </div>
+            <div class="nav-section-label">Students</div>
+            <div class="nav-item" onclick="window.location.href='gradewise-pro.html'">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                </svg>
+                Student Registry
+            </div>
+            <div class="nav-item" onclick="window.location.href='gradewise-pro.html'">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                    <line x1="12" y1="17" x2="12" y2="22" />
+                    <line x1="9.5" y1="19.5" x2="14.5" y2="19.5" />
+                </svg>
+                Add Student
+            </div>
+            <div class="nav-section-label">Reports</div>
+            <div class="nav-item" onclick="window.location.href='gradewise-pro.html'">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                    <line x1="16" y1="13" x2="8" y2="13" />
+                    <line x1="16" y1="17" x2="8" y2="17" />
+                </svg>
+                Report Preview
+            </div>
+            <div class="nav-item" onclick="window.location.href='batch-printing.html'">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="17 8 12 3 7 8" />
+                    <line x1="12" y1="3" x2="12" y2="15" />
+                </svg>
+                Batch Export
+            </div>
+            <div class="nav-item" onclick="window.location.href='gradewise-pro.html'">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                    <polyline points="22,6 12,13 2,6" />
+                </svg>
+                Email Log
+            </div>
+            <div class="nav-section-label">Analytics</div>
+            <div class="nav-item" onclick="window.location.href='analysis.html'">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                </svg>
+                Performance Charts
+            </div>
+            <div class="nav-item" onclick="window.location.href='gradewise-pro.html'">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                    <line x1="16" y1="2" x2="16" y2="6" />
+                    <line x1="8" y1="2" x2="8" y2="6" />
+                    <line x1="3" y1="10" x2="21" y2="10" />
+                </svg>
+                Attendance
+            </div>
+            <div class="nav-item" onclick="window.location.href='import-results.html'">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="7 10 12 15 17 10" />
+                    <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+                Import Results
+            </div>
+            <div class="nav-item" onclick="window.location.href='gradewise-pro.html'">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="2" y1="12" x2="22" y2="12" />
+                    <path
+                        d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                </svg>
+                Parent Portal
+            </div>
+            <div class="nav-item active" onclick="window.location.href='settings.html'">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="3" />
+                    <path
+                        d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M19.07 19.07l-1.41-1.41M4.93 19.07l1.41-1.41M12 2v2M12 20v2M2 12h2M20 12h2" />
+                </svg>
+                School Settings
+            </div>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="dark-toggle" onclick="toggleDarkMode()" id="dark-toggle-btn">
+                <div class="toggle-track" id="dark-toggle-track">
+                    <div class="toggle-thumb"></div>
+                </div>
+                <span style="font-size:12px;color:rgba(255,255,255,0.5);" id="dark-toggle-label">Dark Mode</span>
+            </div>
+            <div style="margin-top:8px;">
+                <div
+                    style="font-size:10px;color:rgba(255,255,255,0.3);margin-bottom:5px;letter-spacing:0.1em;text-transform:uppercase;">
+                    Language</div>
+                <div class="lang-switcher" id="lang-switcher">
+                    <button class="lang-btn active" onclick="setLang('en')">EN</button>
+                    <button class="lang-btn" onclick="setLang('fr')">FR</button>
+                    <button class="lang-btn" onclick="setLang('tw')">TW</button>
+                    <button class="lang-btn" onclick="setLang('ha')">HA</button>
+                </div>
+            </div>
+            <div style="margin-top:10px;">
+                <div id="conn-badge" class="conn-badge online">
+                    <span class="conn-dot"></span><span id="conn-label">Online</span>
+                </div>
+            </div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.2);margin-top:6px;">v2.0 · GradeWise Pro</div>
+        </div>
+    </aside>
+
+    <!-- OFFLINE BANNER -->
+    <div class="offline-banner" id="offline-banner">
+        <span>⚠</span>
+        <span><strong>You're offline.</strong> All student data is still accessible. AI features and email sending will
+            resume when your connection is restored.</span>
+    </div>
+
+    <!-- MAIN -->
+    <main class="main">
+        <div class="topbar">
+            <div class="topbar-title" id="topbar-title">School Settings</div>
+            <div class="topbar-actions">
+                <span class="tag">Term 2 · 2025/26</span>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- School Information -->
+            <div class="panel mb-4">
+                <div class="panel-header"><span class="panel-title">School Information</span></div>
+                <div class="panel-body">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="school-name"
+                                style="font-size:11px;font-weight:600;color:var(--ink-light);margin-bottom:4px;display:block;">School
+                                Name</label>
+                            <input type="text" id="school-name"
+                                style="width:100%;padding:8px;border:1px solid var(--rule);border-radius:6px;font-size:12px;outline:none;background:var(--paper);color:var(--ink);"
+                                placeholder="Enter school name">
+                        </div>
+                        <div class="form-group">
+                            <label for="school-addr"
+                                style="font-size:11px;font-weight:600;color:var(--ink-light);margin-bottom:4px;display:block;">Address</label>
+                            <input type="text" id="school-addr"
+                                style="width:100%;padding:8px;border:1px solid var(--rule);border-radius:6px;font-size:12px;outline:none;background:var(--paper);color:var(--ink);"
+                                placeholder="Enter school address">
+                        </div>
+                    </div>
+                    <div style="margin-top:16px;">
+                        <button onclick="saveSchoolInfo()"
+                            style="background:linear-gradient(135deg,#1a5fa0,#0f4a8a);color:white;border:none;border-radius:6px;padding:8px 16px;font-weight:600;font-size:12px;cursor:pointer;">Save
+                            School Info</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Management -->
+            <div class="panel mb-4">
+                <div class="panel-header"><span class="panel-title">Data Management</span></div>
+                <div class="panel-body">
+                    <div style="display:flex;gap:8px;">
+                        <button onclick="exportData()"
+                            style="flex:1;background:linear-gradient(135deg,#059669,#047857);color:white;border:none;border-radius:6px;padding:8px 12px;font-weight:600;font-size:12px;cursor:pointer;">Backup
+                            to File</button>
+                        <button onclick="document.getElementById('import-file').click()"
+                            style="flex:1;border:1px solid var(--rule);color:var(--ink);border-radius:6px;padding:8px 12px;font-weight:600;font-size:12px;cursor:pointer;background:var(--paper);">Restore
+                            Backup</button>
+                        <input type="file" id="import-file" style="display:none;" onchange="importData(event)">
+                    </div>
+                </div>
+            </div>
+
+            <!-- School Logo -->
+            <div class="panel mb-4">
+                <div class="panel-header"><span class="panel-title">School Logo</span></div>
+                <div class="panel-body">
+                    <div style="display:flex;gap:8px;align-items:center;margin-bottom:16px;">
+                        <label for="logo-file" style="font-size:11px;font-weight:600;color:var(--ink-light);">Select
+                            Logo Image:</label>
+                        <input type="file" id="logo-file" accept="image/*" onchange="uploadLogo(event)"
+                            style="flex:1;border:1px solid var(--rule);border-radius:6px;padding:6px 8px;font-size:12px;outline:none;background:var(--paper);color:var(--ink);">
+                        <button onclick="clearLogo()"
+                            style="border:1px solid #dc2626;color:#dc2626;border-radius:6px;padding:6px 12px;font-weight:600;font-size:12px;cursor:pointer;background:var(--paper);">Clear
+                            Logo</button>
+                    </div>
+                    <img id="logo-preview" src="" alt="School Logo"
+                        style="max-width:200px;border-radius:6px;border:1px solid var(--rule);display:none;">
+                </div>
+            </div>
+
+            <!-- AI Settings -->
+            <div class="panel">
+                <div class="panel-header"><span class="panel-title">AI Report Card Assistant</span></div>
+                <div class="panel-body">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="ai-provider"
+                                style="font-size:11px;font-weight:600;color:var(--ink-light);margin-bottom:4px;display:block;">AI
+                                Provider</label>
+                            <select id="ai-provider" onchange="updateProviderFields()"
+                                style="width:100%;padding:8px;border:1px solid var(--rule);border-radius:6px;font-size:12px;outline:none;background:var(--paper);color:var(--ink);">
+                                <option value="openai">OpenAI</option>
+                                <option value="anthropic">Anthropic (Claude)</option>
+                                <option value="google">Google (Gemini)</option>
+                                <option value="ollama">Ollama (Local)</option>
+                                <option value="custom">Custom API</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="api-key-section">
+                            <label for="api-key"
+                                style="font-size:11px;font-weight:600;color:var(--ink-light);margin-bottom:4px;display:block;">API
+                                Key</label>
+                            <input type="text" id="api-key" placeholder="Enter your API key"
+                                style="width:100%;padding:8px;border:1px solid var(--rule);border-radius:6px;font-size:12px;outline:none;background:var(--paper);color:var(--ink);">
+                            <p id="api-key-help" style="font-size:10px;color:var(--ink-light);margin-top:4px;">Get your
+                                API key at <a href="https://openai.com" target="_blank"
+                                    style="color:#1a5fa0;">openai.com</a></p>
+                        </div>
+                        <div class="form-group" id="model-section">
+                            <label for="ai-model"
+                                style="font-size:11px;font-weight:600;color:var(--ink-light);margin-bottom:4px;display:block;">Model</label>
+                            <select id="ai-model"
+                                style="width:100%;padding:8px;border:1px solid var(--rule);border-radius:6px;font-size:12px;outline:none;background:var(--paper);color:var(--ink);">
+                                <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+                                <option value="gpt-4">GPT-4</option>
+                                <option value="gpt-4-turbo">GPT-4 Turbo</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="custom-endpoint-section" style="display:none;">
+                            <label for="custom-endpoint"
+                                style="font-size:11px;font-weight:600;color:var(--ink-light);margin-bottom:4px;display:block;">Custom
+                                Endpoint URL</label>
+                            <input type="url" id="custom-endpoint"
+                                placeholder="https://your-api-endpoint.com/v1/chat/completions"
+                                style="width:100%;padding:8px;border:1px solid var(--rule);border-radius:6px;font-size:12px;outline:none;background:var(--paper);color:var(--ink);">
+                        </div>
+                        <div class="form-group" id="ollama-model-section" style="display:none;">
+                            <label for="ollama-model"
+                                style="font-size:11px;font-weight:600;color:var(--ink-light);margin-bottom:4px;display:block;">Ollama
+                                Model</label>
+                            <input type="text" id="ollama-model" placeholder="llama2" value="llama2"
+                                style="width:100%;padding:8px;border:1px solid var(--rule);border-radius:6px;font-size:12px;outline:none;background:var(--paper);color:var(--ink);">
+                        </div>
+                    </div>
+                    <div style="margin-top:16px;">
+                        <label for="ai-prompt"
+                            style="font-size:11px;font-weight:600;color:var(--ink-light);margin-bottom:4px;display:block;">Test
+                            Prompt</label>
+                        <textarea id="ai-prompt" placeholder="Describe what you need help with for the report card..."
+                            rows="3"
+                            style="width:100%;padding:8px;border:1px solid var(--rule);border-radius:6px;font-size:12px;outline:none;background:var(--paper);color:var(--ink);margin-bottom:8px;"></textarea>
+                        <button onclick="generateAIContent()"
+                            style="background:linear-gradient(135deg,#1a5fa0,#0f4a8a);color:white;border:none;border-radius:6px;padding:8px 16px;font-weight:600;font-size:12px;cursor:pointer;">Test
+                            AI Connection</button>
+                    </div>
+                    <div id="ai-response" class="mt-2 p-2 rounded text-sm hidden max-h-32 overflow-y-auto"
+                        style="background:var(--bg-light);border:1px solid var(--rule);font-size:12px;color:var(--ink);margin-top:8px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="gradewise-pro.js"></script>
+    <script>
+        // Settings specific functions
+        function saveSchoolInfo () {
+            const name = document.getElementById('school-name').value.trim();
+            const addr = document.getElementById('school-addr').value.trim();
+            if (!name || !addr)
+            {
+                alert('Please fill in both school name and address.');
+                return;
+            }
+            settings.schoolName = name;
+            settings.addr = addr;
+            localStorage.setItem('gw_settings', JSON.stringify(settings));
+            alert('School information saved!');
+        }
+
+        function exportData () {
+            const data = localStorage.getItem('gw_students');
+            if (!data)
+            {
+                alert('No data to backup!');
+                return;
+            }
+            const blob = new Blob([data], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `academy_backup_${new Date().toLocaleDateString().replace(/\//g, '-')}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function importData (event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try
+                {
+                    localStorage.setItem('gw_students', e.target.result);
+                    alert('Data restored successfully!');
+                    window.location.href = 'gradewise-pro.html';
+                } catch (error)
+                {
+                    alert('Error restoring data: ' + error.message);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function uploadLogo (event) {
+            const file = event.target.files[0];
+            if (file)
+            {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    localStorage.setItem('school_logo', e.target.result);
+                    document.getElementById('logo-preview').src = e.target.result;
+                    document.getElementById('logo-preview').style.display = 'block';
+                    alert('Logo uploaded successfully!');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function clearLogo () {
+            localStorage.removeItem('school_logo');
+            document.getElementById('logo-preview').src = '';
+            document.getElementById('logo-preview').style.display = 'none';
+            alert('Logo cleared!');
+        }
+
+        async function generateAIContent () {
+            const provider = document.getElementById('ai-provider').value;
+            const prompt = document.getElementById('ai-prompt').value;
+            if (!prompt)
+            {
+                alert('Please enter a prompt.');
+                return;
+            }
+
+            // Save settings to localStorage
+            const aiSettings = {
+                provider: provider,
+                apiKey: document.getElementById('api-key').value,
+                model: document.getElementById('ai-model').value,
+                customEndpoint: document.getElementById('custom-endpoint').value,
+                ollamaModel: document.getElementById('ollama-model').value
+            };
+            localStorage.setItem('ai_settings', JSON.stringify(aiSettings));
+
+            const responseDiv = document.getElementById('ai-response');
+            responseDiv.classList.remove('hidden');
+            responseDiv.textContent = 'Generating...';
+
+            try
+            {
+                const response = await callAI(prompt);
+                responseDiv.textContent = response;
+            } catch (error)
+            {
+                responseDiv.textContent = 'Error: ' + error.message;
+            }
+        }
+
+        function updateProviderFields () {
+            const provider = document.getElementById('ai-provider').value;
+            const apiKeySection = document.getElementById('api-key-section');
+            const modelSection = document.getElementById('model-section');
+            const customEndpointSection = document.getElementById('custom-endpoint-section');
+            const ollamaModelSection = document.getElementById('ollama-model-section');
+            const apiKeyHelp = document.getElementById('api-key-help');
+
+            // Hide all sections first
+            apiKeySection.style.display = 'none';
+            modelSection.style.display = 'none';
+            customEndpointSection.style.display = 'none';
+            ollamaModelSection.style.display = 'none';
+
+            switch (provider)
+            {
+                case 'openai':
+                    apiKeySection.style.display = 'block';
+                    modelSection.style.display = 'block';
+                    apiKeyHelp.innerHTML = 'Get your API key at <a href="https://openai.com" target="_blank" style="color:#1a5fa0;">openai.com</a>';
+                    break;
+                case 'anthropic':
+                    apiKeySection.style.display = 'block';
+                    apiKeyHelp.innerHTML = 'Get your API key at <a href="https://console.anthropic.com" target="_blank" style="color:#1a5fa0;">console.anthropic.com</a>';
+                    break;
+                case 'google':
+                    apiKeySection.style.display = 'block';
+                    apiKeyHelp.innerHTML = 'Get your API key at <a href="https://makersuite.google.com/app/apikey" target="_blank" style="color:#1a5fa0;">Google AI Studio</a>';
+                    break;
+                case 'ollama':
+                    ollamaModelSection.style.display = 'block';
+                    break;
+                case 'custom':
+                    apiKeySection.style.display = 'block';
+                    customEndpointSection.style.display = 'block';
+                    apiKeyHelp.innerHTML = 'Enter your custom API endpoint and key';
+                    break;
+            }
+        }
+
+        // Load settings on page load
+        function loadSettings () {
+            // Load school info
+            document.getElementById('school-name').value = settings.schoolName || '';
+            document.getElementById('school-addr').value = settings.addr || '';
+
+            // Load logo
+            const logo = localStorage.getItem('school_logo');
+            if (logo)
+            {
+                document.getElementById('logo-preview').src = logo;
+                document.getElementById('logo-preview').style.display = 'block';
+            }
+
+            // Load AI settings
+            const aiSettings = JSON.parse(localStorage.getItem('ai_settings') || '{}');
+            if (aiSettings.provider)
+            {
+                document.getElementById('ai-provider').value = aiSettings.provider;
+                updateProviderFields();
+            }
+            if (aiSettings.apiKey)
+            {
+                document.getElementById('api-key').value = aiSettings.apiKey;
+            }
+            if (aiSettings.model)
+            {
+                document.getElementById('ai-model').value = aiSettings.model;
+            }
+            if (aiSettings.customEndpoint)
+            {
+                document.getElementById('custom-endpoint').value = aiSettings.customEndpoint;
+            }
+            if (aiSettings.ollamaModel)
+            {
+                document.getElementById('ollama-model').value = aiSettings.ollamaModel;
+            }
+
+            // Backward compatibility for old OpenAI-only settings
+            const oldApiKey = localStorage.getItem('openai_api_key');
+            if (oldApiKey && !aiSettings.apiKey)
+            {
+                document.getElementById('ai-provider').value = 'openai';
+                document.getElementById('api-key').value = oldApiKey;
+                updateProviderFields();
+            }
+        }
+
+        // Init
+        init();
+        loadSettings();
+    </script>
+</body>
+
+</html>

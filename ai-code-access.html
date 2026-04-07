@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Code Access - GradeWise Pro</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .code-access-container {
+            display: grid;
+            grid-template-columns: 250px 1fr 350px;
+            gap: 0;
+            height: 100vh;
+            background: var(--paper);
+        }
+
+        .sidebar {
+            border-right: 1px solid var(--rule);
+            overflow-y: auto;
+            background: var(--paper-dark);
+        }
+
+        .sidebar-section {
+            padding: 12px;
+            border-bottom: 1px solid var(--rule);
+        }
+
+        .sidebar-title {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--muted);
+            margin-bottom: 8px;
+        }
+
+        .file-item {
+            padding: 8px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            color: var(--ink);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            user-select: none;
+            transition: all 0.15s;
+            font-family: 'DM Mono', monospace;
+        }
+
+        .file-item:hover {
+            background: var(--paper);
+            color: var(--gold);
+        }
+
+        .file-item.active {
+            background: var(--gold);
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .file-item-icon {
+            font-size: 10px;
+            opacity: 0.7;
+        }
+
+        .viewer {
+            display: flex;
+            flex-direction: column;
+            background: var(--paper);
+            border-right: 1px solid var(--rule);
+        }
+
+        .viewer-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--rule);
+            background: linear-gradient(135deg, var(--paper-dark), var(--paper));
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .viewer-header h3 {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--ink);
+            margin: 0;
+            font-family: 'DM Mono', monospace;
+        }
+
+        .code-preview {
+            flex: 1;
+            overflow-y: auto;
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            line-height: 1.6;
+            color: var(--ink);
+            background: var(--paper);
+        }
+
+        .code-line {
+            padding: 2px 20px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .code-line-num {
+            display: inline-block;
+            width: 40px;
+            text-align: right;
+            margin-right: 12px;
+            color: var(--muted);
+            user-select: none;
+        }
+
+        .code-syntax-keyword {
+            color: #af87ff;
+        }
+
+        .code-syntax-string {
+            color: #5ab926;
+        }
+
+        .code-syntax-comment {
+            color: var(--muted);
+            font-style: italic;
+        }
+
+        .code-syntax-function {
+            color: #0184b4;
+        }
+
+        .panel-right {
+            border-left: 1px solid var(--rule);
+            display: flex;
+            flex-direction: column;
+            background: var(--paper-dark);
+        }
+
+        .panel-header {
+            padding: 16px 16px;
+            border-bottom: 1px solid var(--rule);
+            background: linear-gradient(135deg, #0f1117, #1e2540);
+            border-right: 2px solid rgba(201, 146, 42, 0.3);
+        }
+
+        .panel-header h3 {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--gold-light);
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .access-controls {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .access-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+        }
+
+        .access-control input {
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+        }
+
+        .access-control label {
+            cursor: pointer;
+            color: var(--ink);
+        }
+
+        .audit-log {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            border-top: 1px solid var(--rule);
+        }
+
+        .audit-entry {
+            padding: 8px;
+            margin-bottom: 8px;
+            background: rgba(201, 146, 42, 0.05);
+            border-left: 2px solid rgba(201, 146, 42, 0.3);
+            border-radius: 4px;
+            font-size: 10px;
+            color: var(--muted);
+            font-family: 'DM Mono', monospace;
+        }
+
+        .audit-time {
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        .access-badge {
+            display: inline-block;
+            padding: 2px 6px;
+            background: var(--emerald);
+            color: #fff;
+            border-radius: 3px;
+            font-size: 9px;
+            font-weight: 600;
+            margin: 0 4px;
+        }
+
+        .access-badge.restricted {
+            background: var(--crimson);
+        }
+
+        .copy-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 16px;
+            background: var(--gold);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(201, 146, 42, 0.3);
+            display: none;
+        }
+
+        .copy-btn:hover {
+            background: #d4a637;
+        }
+
+        .file-stats {
+            padding: 16px;
+            border-top: 1px solid var(--rule);
+            font-size: 11px;
+            color: var(--muted);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .stat-line {
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+
+<body style="background: var(--paper);overflow:hidden;margin:0;">
+
+    <div class="code-access-container">
+        <!-- File Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-title">📂 Source Files</div>
+                <div id="file-list">
+                    <div class="file-item active" onclick="loadFile(this, 'gradewise-pro.js')">
+                        <span class="file-item-icon">⚙️</span> gradewise-pro.js
+                    </div>
+                    <div class="file-item" onclick="loadFile(this, 'main.js')">
+                        <span class="file-item-icon">🎯</span> main.js
+                    </div>
+                    <div class="file-item" onclick="loadFile(this, 'preload.js')">
+                        <span class="file-item-icon">🔧</span> preload.js
+                    </div>
+                    <div class="file-item" onclick="loadFile(this, 'claude_api.py')">
+                        <span class="file-item-icon">🐍</span> claude_api.py
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-title">📄 HTML Pages</div>
+                <div id="html-list">
+                    <div class="file-item" onclick="loadFile(this, 'gradewise-pro.html')">
+                        <span class="file-item-icon">📋</span> gradewise-pro.html
+                    </div>
+                    <div class="file-item" onclick="loadFile(this, 'batch-printing.html')">
+                        <span class="file-item-icon">🖨️</span> batch-printing.html
+                    </div>
+                    <div class="file-item" onclick="loadFile(this, 'analysis.html')">
+                        <span class="file-item-icon">📊</span> analysis.html
+                    </div>
+                    <div class="file-item" onclick="loadFile(this, 'google-auth.html')">
+                        <span class="file-item-icon">🔐</span> google-auth.html
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-title">🎨 Assets</div>
+                <div id="asset-list">
+                    <div class="file-item" onclick="loadFile(this, 'style.css')">
+                        <span class="file-item-icon">🎨</span> style.css
+                    </div>
+                    <div class="file-item" onclick="loadFile(this, 'package.json')">
+                        <span class="file-item-icon">📦</span> package.json
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Code Viewer -->
+        <div class="viewer">
+            <div class="viewer-header">
+                <h3 id="viewer-title">gradewise-pro.js</h3>
+                <div style="display:flex;gap:8px;align-items:center;">
+                    <span id="file-status" style="font-size:11px;color:var(--muted);">0 lines</span>
+                </div>
+            </div>
+            <div class="code-preview" id="code-preview">
+                <div style="padding:20px;text-align:center;color:var(--muted);">Loading...</div>
+            </div>
+        </div>
+
+        <!-- Access Control Panel -->
+        <div class="panel-right">
+            <div class="panel-header">
+                <h3>🔐 Access Control</h3>
+            </div>
+
+            <div class="access-controls">
+                <div class="access-control">
+                    <input type="checkbox" id="ai-read-access" checked>
+                    <label for="ai-read-access">AI Read Access</label>
+                </div>
+                <div class="access-control">
+                    <input type="checkbox" id="ai-suggest-changes" checked>
+                    <label for="ai-suggest-changes">AI Suggest Changes</label>
+                </div>
+                <div class="access-control">
+                    <input type="checkbox" id="ai-view-secrets">
+                    <label for="ai-view-secrets">View API Keys</label>
+                </div>
+                <div class="access-control">
+                    <input type="checkbox" id="ai-execute-code">
+                    <label for="ai-execute-code">Execute Code</label>
+                </div>
+            </div>
+
+            <div class="file-stats">
+                <div class="stat-line">
+                    <span>Total Files:</span>
+                    <strong>8</strong>
+                </div>
+                <div class="stat-line">
+                    <span>Code Lines:</span>
+                    <strong id="total-lines">1,500+</strong>
+                </div>
+                <div class="stat-line">
+                    <span>Current Access:</span>
+                    <span class="access-badge">READ</span>
+                </div>
+            </div>
+
+            <div class="audit-log">
+                <div
+                    style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">
+                    📋 Audit Log</div>
+                <div id="audit-log-list">
+                    <div class="audit-entry">
+                        <span class="audit-time">14:32</span> - AI accessed gradewise-pro.js (READ)
+                    </div>
+                    <div class="audit-entry">
+                        <span class="audit-time">14:28</span> - AI enabled at code-access.html
+                    </div>
+                    <div class="audit-entry">
+                        <span class="audit-time">14:15</span> - Code access initialized
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Copy Button -->
+    <button class="copy-btn" id="copy-btn" onclick="copyCurrentCode()">📋 Copy Code</button>
+
+    <script>
+        const codeSnippets = {
+            'gradewise-pro.js': `// Main utilities for GradeWise Pro
+// Shared functions used across all pages
+
+function getGrade(avg) {
+    if (avg >= 90) return 'A';
+    if (avg >= 80) return 'B';
+    if (avg >= 70) return 'C';
+    if (avg >= 60) return 'D';
+    return 'F';
+}
+
+function formatDate(date) {
+    return new Date(date).toLocaleDateString('en-US', {
+        year: 'numeric', month: 'short', day: 'numeric'
+    });
+}
+
+function calculateAverage(grades) {
+    if (!grades || grades.length === 0) return 0;
+    const sum = grades.reduce((acc, grade) => acc + grade, 0);
+    return (sum / grades.length).toFixed(2);
+}
+
+// Data storage functions
+function saveToLocalStorage(key, data) {
+    localStorage.setItem(key, JSON.stringify(data));
+}
+
+function loadFromLocalStorage(key) {
+    const data = localStorage.getItem(key);
+    return data ? JSON.parse(data) : null;
+}
+
+// API integration
+async function callAIAPI(prompt, apiKey) {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': apiKey
+        },
+        body: JSON.stringify({
+            model: 'claude-sonnet-4-20250514',
+            max_tokens: 1000,
+            messages: [{ role: 'user', content: prompt }]
+        })
+    });
+    return response.json();
+}`,
+
+            'main.js': `// Electron main process
+// Handles IPC communication and window management
+
+const { app, BrowserWindow } = require('electron');
+const isDev = require('electron-is-dev');
+const path = require('path');
+
+let mainWindow;
+
+function createWindow() {
+    mainWindow = new BrowserWindow({
+        width: 1400,
+        height: 900,
+        webPreferences: {
+            nodeIntegration: false,
+            preload: path.join(__dirname, 'preload.js')
+        }
+    });
+
+    const startUrl = isDev
+        ? 'http://localhost:3000'
+        : 'file://' + path.join(__dirname, '../build/index.html');
+
+    mainWindow.loadURL(startUrl);
+    if (isDev) mainWindow.webDevTools.openDevTools();
+}
+
+app.on('ready', createWindow);
+
+app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') app.quit();
+});`,
+
+            'preload.js': `// Preload script for secure context bridge
+// Exposes limited API to renderer process
+
+const { contextBridge, ipcRenderer } = require('electron');
+
+contextBridge.exposeInMainWorld('electronAPI', {
+    invoke: (channel, data) => ipcRenderer.invoke(channel, data),
+    on: (channel, callback) => ipcRenderer.on(channel, callback)
+});`,
+
+            'claude_api.py': `#!/usr/bin/env python3
+"""
+Claude API Integration for GradeWise Pro
+Handles backend AI operations
+"""
+
+import anthropic
+import json
+
+class AIReportEditor:
+    def __init__(self, api_key):
+        self.client = anthropic.Anthropic(api_key=api_key)
+        self.model = "claude-sonnet-4-20250514"
+    
+    def enhance_remarks(self, original, instruction, tone="formal"):
+        """Enhance teacher remarks using AI"""
+        prompt = f"""You are an educational AI assistant.
+Original remark: {original}
+Instruction: {instruction}
+Tone: {tone}
+
+Generate enhanced remarks that are constructive and encouraging."""
+        
+        message = self.client.messages.create(
+            model=self.model,
+            max_tokens=400,
+            messages=[{"role": "user", "content": prompt}]
+        )
+        return message.content[0].text
+    
+    def generate_insights(self, student_data):
+        """Generate class insights from student data"""
+        prompt = f"""Analyze this student performance data:
+{json.dumps(student_data, indent=2)}
+
+Provide actionable insights for the teacher."""
+        
+        message = self.client.messages.create(
+            model=self.model,
+            max_tokens=600,
+            messages=[{"role": "user", "content": prompt}]
+        )
+        return message.content[0].text`,
+
+            'gradewise-pro.html': `<!-- Main Dashboard -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GradeWise Pro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="main">
+        <nav class="sidebar">...</nav>
+        <section id="view-dashboard">...</section>
+        <section id="view-students">...</section>
+    </main>
+    <script src="gradewise-pro.js"></script>
+</body>
+
+</html>`,
+
+'batch-printing.html': `<!-- Batch Printing Page -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Batch Printing - GradeWise Pro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <main class="main">
+        <div class="batch-list">...</div>
+    </main>
+</body>
+
+</html>`,
+
+'analysis.html': `<!-- Analysis & Analytics Page -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Analysis - GradeWise Pro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <main class="main">
+        <div class="analytics-dashboard">...</div>
+    </main>
+</body>
+
+</html>`,
+
+'google-auth.html': `<!-- Google Authentication Page -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Google Login - GradeWise Pro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="auth-container">
+        <button class="google-auth-btn">Sign in with Google</button>
+        <div class="storage-selector">
+            <input type="radio" id="cloud" name="storage">
+            <label for="cloud">Google Cloud Storage</label>
+            <input type="radio" id="local" name="storage">
+            <label for="local">Local Storage</label>
+        </div>
+    </div>
+</body>
+
+</html>`,
+
+'style.css': `/* Main Stylesheet */
+:root {
+--paper: #fafafa;
+--paper-dark: #f0f0f0;
+--ink: #1a1a1a;
+--muted: #777;
+--rule: #e0e0e0;
+--gold: #c9922a;
+--gold-light: #f4e4c1;
+--emerald: #2db844;
+--crimson: #d32f2f;
+}
+
+body {
+margin: 0;
+font-family: 'DM Sans', sans-serif;
+background: var(--paper);
+color: var(--ink);
+}
+
+.main {
+display: grid;
+grid-template-columns: 200px 1fr;
+min-height: 100vh;
+}
+
+.sidebar {
+background: var(--paper-dark);
+border-right: 1px solid var(--rule);
+padding: 20px 0;
+}`,
+
+'package.json': `{
+"name": "gradewise-pro",
+"version": "2.0.0",
+"description": "Educational grade management system",
+"main": "public/electron.js",
+"homepage": "./",
+"scripts": {
+"react-start": "react-scripts start",
+"react-build": "react-scripts build",
+"electron-start": "concurrently \\"npm run react-start\\" \\"wait-on http://localhost:3000 && electron .\\"",
+"electron-build": "npm run react-build && electron-builder"
+},
+"dependencies": {
+"react": "^18.2.0",
+"react-dom": "^18.2.0",
+"electron-squirrel-startup": "^1.1.0",
+"anthropic": "^0.9.0"
+},
+"devDependencies": {
+"electron": "^latest",
+"electron-builder": "^latest"
+}
+}`
+};
+
+let currentFile = 'gradewise-pro.js';
+let allCode = '';
+
+function loadFile(element, filename) {
+document.querySelectorAll('.file-item').forEach(el => el.classList.remove('active'));
+element.classList.add('active');
+
+currentFile = filename;
+const code = codeSnippets[filename] || '// File not found';
+const lines = code.split('\n').length;
+
+document.getElementById('viewer-title').textContent = filename;
+document.getElementById('file-status').textContent = `${lines} lines`;
+
+// Syntax highlighting
+const highlighted = highlightCode(code);
+document.getElementById('code-preview').innerHTML = highlighted;
+
+allCode = code;
+
+// Log audit
+addAuditEntry(`AI accessed ${filename} (READ)`);
+}
+
+function highlightCode(code) {
+let highlighted = code;
+
+// Keywords
+const keywords = ['function', 'const', 'let', 'var', 'async', 'await', 'return', 'if', 'else', 'for', 'class',
+'extends'];
+keywords.forEach(kw => {
+highlighted = highlighted.replace(new RegExp(`\\b${kw}\\b`, 'g'), `<span class="code-syntax-keyword">${kw}</span>`);
+});
+
+// Comments
+highlighted = highlighted.replace(/\/\/.*/g, '<span class="code-syntax-comment">$&</span>');
+
+// Strings
+highlighted = highlighted.replace(/'[^']*'/g, '<span class="code-syntax-string">$&</span>');
+highlighted = highlighted.replace(/"[^"]*"/g, '<span class="code-syntax-string">$&</span>');
+
+// Line numbers
+const lines = highlighted.split('\n');
+return lines.map((line, i) =>
+`<div class="code-line"><span class="code-line-num">${i + 1}</span>${line}`
+    ).join('</div>');
+}
+
+function addAuditEntry(message) {
+const time = new Date().toLocaleTimeString('en-US', { hour12: false });
+const entry = document.createElement('div');
+entry.className = 'audit-entry';
+entry.innerHTML = `<span class="audit-time">${time}</span> - ${message}`;
+document.getElementById('audit-log-list').insertBefore(entry, document.getElementById('audit-log-list').firstChild);
+}
+
+function copyCurrentCode() {
+navigator.clipboard.writeText(allCode).then(() => {
+alert('✓ Code copied to clipboard!');
+});
+}
+
+// Initialize
+window.addEventListener('load', () => {
+document.querySelector('.file-item').click();
+});
+
+// Show copy button on selection
+document.addEventListener('mouseup', () => {
+if (window.getSelection().toString().length > 0) {
+document.getElementById('copy-btn').style.display = 'block';
+}
+});
+
+document.addEventListener('mousedown', () => {
+document.getElementById('copy-btn').style.display = 'none';
+});
+</script>
+</body>
+
+</html>

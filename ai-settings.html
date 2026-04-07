@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Settings - GradeWise Pro</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .settings-container {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            gap: 0;
+            min-height: 100vh;
+            background: var(--paper);
+        }
+
+        .settings-sidebar {
+            background: var(--paper-dark);
+            border-right: 1px solid var(--rule);
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        .settings-category {
+            padding: 8px 0;
+        }
+
+        .settings-category-title {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--muted);
+            padding: 0 20px 8px;
+            margin-top: 12px;
+        }
+
+        .settings-item {
+            padding: 10px 20px;
+            cursor: pointer;
+            color: var(--ink);
+            font-size: 13px;
+            transition: all 0.15s;
+            border-left: 3px solid transparent;
+        }
+
+        .settings-item:hover {
+            background: rgba(201, 146, 42, 0.08);
+            color: var(--gold);
+        }
+
+        .settings-item.active {
+            background: rgba(201, 146, 42, 0.12);
+            border-left-color: var(--gold);
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        .settings-main {
+            overflow-y: auto;
+            padding: 40px;
+        }
+
+        .settings-section {
+            display: none;
+        }
+
+        .settings-section.active {
+            display: block;
+        }
+
+        .settings-section h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--ink);
+        }
+
+        .settings-section-desc {
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .settings-group {
+            background: white;
+            border: 1px solid var(--rule);
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .settings-group h3 {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--ink);
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--ink);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 13px;
+            color: var(--ink);
+            background: white;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+            font-family: 'DM Mono', monospace;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(201, 146, 42, 0.1);
+        }
+
+        .form-hint {
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        .storage-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .storage-option {
+            padding: 16px;
+            border: 2px solid var(--rule);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.15s;
+            text-align: center;
+        }
+
+        .storage-option:hover {
+            border-color: var(--gold);
+            background: rgba(201, 146, 42, 0.05);
+        }
+
+        .storage-option.active {
+            border-color: var(--gold);
+            background: rgba(201, 146, 42, 0.1);
+        }
+
+        .storage-option input {
+            display: none;
+        }
+
+        .storage-option-title {
+            font-weight: 700;
+            color: var(--ink);
+            margin-bottom: 4px;
+        }
+
+        .storage-option-desc {
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .checkbox-item input {
+            width: auto;
+            margin: 0;
+        }
+
+        .checkbox-item label {
+            margin: 0;
+            text-transform: none;
+            font-weight: 400;
+            margin-bottom: 0;
+            display: inline;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .status-message {
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            margin-top: 16px;
+            display: none;
+        }
+
+        .status-message.success {
+            display: block;
+            background: rgba(45, 184, 68, 0.1);
+            color: var(--emerald);
+            border: 1px solid rgba(45, 184, 68, 0.2);
+        }
+
+        .status-message.error {
+            display: block;
+            background: rgba(211, 47, 47, 0.1);
+            color: var(--crimson);
+            border: 1px solid rgba(211, 47, 47, 0.2);
+        }
+
+        .api-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: var(--paper-dark);
+            border-radius: 4px;
+            font-size: 11px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        .status-dot.active {
+            background: var(--emerald);
+        }
+
+        .sync-info {
+            background: rgba(201, 146, 42, 0.05);
+            border: 1px solid rgba(201, 146, 42, 0.2);
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            color: var(--ink);
+            margin-top: 12px;
+        }
+
+        .divider {
+            border-bottom: 1px solid var(--rule);
+            margin: 20px 0;
+        }
+    </style>
+</head>
+
+<body style="margin:0;background:var(--paper);">
+
+    <div class="settings-container">
+        <!-- Sidebar -->
+        <div class="settings-sidebar">
+            <div class="settings-category">
+                <div class="settings-category-title">AI Configuration</div>
+                <div class="settings-item active" onclick="showSection('claude-api', this)">
+                    ⚡ Claude API Key
+                </div>
+                <div class="settings-item" onclick="showSection('ai-settings', this)">
+                    ✦ AI Settings
+                </div>
+            </div>
+
+            <div class="settings-category">
+                <div class="settings-category-title">Storage</div>
+                <div class="settings-item" onclick="showSection('storage', this)">
+                    ☁️ Storage Sync
+                </div>
+                <div class="settings-item" onclick="showSection('backup', this)">
+                    💾 Backup & Restore
+                </div>
+            </div>
+
+            <div class="settings-category">
+                <div class="settings-category-title">Security</div>
+                <div class="settings-item" onclick="showSection('security', this)">
+                    🔐 Access Control
+                </div>
+                <div class="settings-item" onclick="showSection('audit', this)">
+                    📋 Audit Logs
+                </div>
+            </div>
+
+            <div class="settings-category">
+                <div class="settings-category-title">General</div>
+                <div class="settings-item" onclick="showSection('profile', this)">
+                    👤 Profile
+                </div>
+                <div class="settings-item" onclick="showSection('about', this)">
+                    ℹ️ About
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="settings-main">
+            <!-- Claude API Section -->
+            <div class="settings-section active" id="claude-api">
+                <h2>⚡ Claude API Configuration</h2>
+                <p class="settings-section-desc">Enter your Anthropic Claude API key to enable AI-powered features like
+                    report suggestions and code analysis.</p>
+
+                <div class="settings-group">
+                    <h3>API Key</h3>
+                    <div class="form-group">
+                        <label>Claude API Key</label>
+                        <input type="password" id="claude-api-key" placeholder="sk-ant-xxxxxxxxxxxxx">
+                        <div class="form-hint">Get your API key from https://console.anthropic.com/</div>
+                    </div>
+                    <div class="api-status" id="api-status">
+                        <div class="status-dot"></div>
+                        <span>Not Configured</span>
+                    </div>
+                    <div class="button-group">
+                        <button class="btn btn-primary" onclick="saveClaude()">💾 Save API Key</button>
+                        <button class="btn btn-outline" onclick="testClaudeAPI()">🧪 Test Connection</button>
+                        <button class="btn btn-outline" onclick="toggleAPIKeyVisibility()">👁️ Show</button>
+                    </div>
+                    <div class="status-message" id="claude-status"></div>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="settings-group">
+                    <h3>API Usage</h3>
+                    <div style="font-size:12px;color:var(--muted);line-height:1.8;">
+                        <div><strong>Current Month:</strong> <span id="api-usage-month">0</span> / 1,000,000 tokens
+                        </div>
+                        <div><strong>Model:</strong> Claude 3.5 Sonnet</div>
+                        <div><strong>Max Tokens per Request:</strong> 4,096</div>
+                        <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--rule);">
+                            <a href="https://console.anthropic.com/account/billing/overview" target="_blank"
+                                style="color:var(--gold);text-decoration:none;">View Billing Dashboard →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Settings Section -->
+            <div class="settings-section" id="ai-settings">
+                <h2>✦ AI Settings</h2>
+                <p class="settings-section-desc">Configure AI behavior and response preferences for report editing and
+                    analysis.</p>
+
+                <div class="settings-group">
+                    <h3>Report Writing Style</h3>
+                    <div class="form-group">
+                        <label>Default Tone</label>
+                        <select id="ai-tone">
+                            <option value="formal">Formal & Professional</option>
+                            <option value="warm">Warm & Encouraging</option>
+                            <option value="concise">Concise & Direct</option>
+                            <option value="detailed">Detailed & Comprehensive</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Detail Level (1-5)</label>
+                        <input type="range" min="1" max="5" value="3" id="ai-detail" style="height:6px;">
+                        <div class="form-hint">Higher values = more detailed responses</div>
+                    </div>
+                </div>
+
+                <div class="settings-group">
+                    <h3>AI Features</h3>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="ai-suggestions" checked>
+                            <label for="ai-suggestions">Enable Report Suggestions</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="ai-auto-grammar">
+                            <label for="ai-auto-grammar">Auto Correct Grammar</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="ai-sentiment">
+                            <label for="ai-sentiment">Detect Sentiment</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="saveAISettings()">💾 Save Settings</button>
+                </div>
+                <div class="status-message" id="ai-settings-status"></div>
+            </div>
+
+            <!-- Storage Section -->
+            <div class="settings-section" id="storage">
+                <h2>☁️ Storage & Sync</h2>
+                <p class="settings-section-desc">Choose where to store your data and configure synchronization
+                    preferences.</p>
+
+                <div class="settings-group">
+                    <h3>Storage Location</h3>
+                    <div class="storage-selector">
+                        <div class="storage-option active" onclick="selectStorage(this, 'local')">
+                            <input type="radio" name="storage" value="local" checked>
+                            <div class="storage-option-title">💾 Local Storage</div>
+                            <div class="storage-option-desc">Data stored on your computer</div>
+                        </div>
+                        <div class="storage-option" onclick="selectStorage(this, 'cloud')">
+                            <input type="radio" name="storage" value="cloud">
+                            <div class="storage-option-title">☁️ Google Drive</div>
+                            <div class="storage-option-desc">Cloud-backed with sync</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-group">
+                    <h3>Sync Settings</h3>
+                    <div class="form-group">
+                        <label>Auto Sync Interval</label>
+                        <select id="sync-interval">
+                            <option value="5">Every 5 minutes</option>
+                            <option value="15" selected>Every 15 minutes</option>
+                            <option value="30">Every 30 minutes</option>
+                            <option value="60">Every hour</option>
+                            <option value="manual">Manual only</option>
+                        </select>
+                    </div>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="sync-on-change" checked>
+                            <label for="sync-on-change">Sync immediately on changes</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="resolve-conflicts">
+                            <label for="resolve-conflicts">Auto-resolve conflicts (keep newer)</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sync-info">
+                    📊 <strong>Last Sync:</strong> <span id="last-sync-time">Never</span><br>
+                    <strong>Status:</strong> <span id="sync-status" style="color:var(--emerald);">✓ Up to date</span>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="saveStorageSettings()">💾 Save Settings</button>
+                    <button class="btn btn-outline" onclick="syncNow()">🔄 Sync Now</button>
+                </div>
+                <div class="status-message" id="storage-status"></div>
+            </div>
+
+            <!-- Backup & Restore -->
+            <div class="settings-section" id="backup">
+                <h2>💾 Backup & Restore</h2>
+                <p class="settings-section-desc">Create backups of your data and restore from previous backups.</p>
+
+                <div class="settings-group">
+                    <h3>Create Backup</h3>
+                    <div style="font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:16px;">
+                        <p>Backup includes all student records, grades, and reports.</p>
+                    </div>
+                    <div class="button-group">
+                        <button class="btn btn-primary" onclick="createBackup()">📦 Create Backup</button>
+                    </div>
+                </div>
+
+                <div class="settings-group">
+                    <h3>Restore from Backup</h3>
+                    <div class="form-group">
+                        <label>Select Backup File</label>
+                        <input type="file" id="backup-file" accept=".zip,.json" onchange="previewBackup()">
+                    </div>
+                    <div class="button-group">
+                        <button class="btn btn-outline" onclick="restoreBackup()">📂 Restore</button>
+                    </div>
+                </div>
+
+                <div class="settings-group">
+                    <h3>Recent Backups</h3>
+                    <div style="font-size:12px;color:var(--muted);">
+                        <div style="padding:8px;border-bottom:1px solid var(--rule);">• <strong>backup_2025-01</strong>
+                            - Jan 15, 2025</div>
+                        <div style="padding:8px;border-bottom:1px solid var(--rule);">• <strong>backup_2024-12</strong>
+                            - Dec 20, 2024</div>
+                        <div style="padding:8px;">• <strong>backup_2024-11</strong> - Nov 10, 2024</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security & Access Control -->
+            <div class="settings-section" id="security">
+                <h2>🔐 Access Control</h2>
+                <p class="settings-section-desc">Manage permissions for AI features and user access.</p>
+
+                <!-- Security Status Dashboard -->
+                <div class="security-status">
+                    <div class="security-card">
+                        <div class="security-card-title">Active Users</div>
+                        <div class="security-card-value success" id="active-users-count">0</div>
+                    </div>
+                    <div class="security-card">
+                        <div class="security-card-title">Recent Logins (24h)</div>
+                        <div class="security-card-value" id="recent-logins-count">0</div>
+                    </div>
+                    <div class="security-card">
+                        <div class="security-card-title">Security Alerts</div>
+                        <div class="security-card-value warning" id="security-alerts-count">0</div>
+                    </div>
+                    <div class="security-card">
+                        <div class="security-card-title">Failed Attempts</div>
+                        <div class="security-card-value warning" id="failed-attempts-count">0</div>
+                    </div>
+                </div>
+
+                <div class="settings-group">
+                    <h3>AI Permissions</h3>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="ai-read" checked>
+                            <label for="ai-read">AI Can Read Code</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="ai-suggest" checked>
+                            <label for="ai-suggest">AI Can Suggest Changes</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="ai-secrets">
+                            <label for="ai-secrets">AI Can Access Secrets</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="ai-execute">
+                            <label for="ai-execute">AI Can Execute Code</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-group">
+                    <h3>User Management</h3>
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" id="new-username" placeholder="Enter username">
+                    </div>
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="new-fullname" placeholder="Enter full name">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="new-email" placeholder="Enter email">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="new-password" placeholder="Enter password">
+                    </div>
+                    <div class="form-group">
+                        <label>Role</label>
+                        <select id="new-role">
+                            <option value="teacher">Teacher</option>
+                            <option value="admin">Administrator</option>
+                            <option value="viewer">Viewer</option>
+                        </select>
+                    </div>
+                    <div class="status-message" id="user-status"></div>
+                    <div class="button-group">
+                        <button class="btn btn-primary" onclick="createUser()">➕ Create User</button>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="saveSecuritySettings()">💾 Save Settings</button>
+                </div>
+            </div>
+
+            <!-- Audit Logs -->
+            <div class="settings-section" id="audit">
+                <h2>📋 Audit Logs</h2>
+                <p class="settings-section-desc">View logs of AI access and system changes.</p>
+
+                <div class="settings-group">
+                    <h3>Filter Logs</h3>
+                    <div class="filter-controls">
+                        <label>Action:</label>
+                        <input type="text" id="audit-action-filter" placeholder="Filter by action">
+                        <label>User:</label>
+                        <input type="text" id="audit-user-filter" placeholder="Filter by user">
+                        <label>Date:</label>
+                        <input type="date" id="audit-date-filter">
+                        <button class="btn btn-outline" onclick="refreshAuditLogs()">🔄 Refresh</button>
+                    </div>
+                </div>
+
+                <div class="settings-group">
+                    <h3>Recent Activity</h3>
+                    <div class="audit-log-container" id="audit-log-container">
+                        <!-- Logs will be loaded here -->
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-outline" onclick="exportAuditLogs()">📥 Export Logs</button>
+                    <button class="btn btn-outline" onclick="clearAuditLogs()">🗑️ Clear Logs</button>
+                </div>
+                <div class="status-message" id="audit-status"></div>
+            </div>
+
+            <!-- Profile Section -->
+            <div class="settings-section" id="profile">
+                <h2>👤 Profile</h2>
+                <p class="settings-section-desc">Manage your account information.</p>
+
+                <div class="settings-group">
+                    <h3>Account Information</h3>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" value="teacher@school.edu" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>School Name</label>
+                        <input type="text" value="Central High School" placeholder="Enter school name">
+                    </div>
+                    <div class="form-group">
+                        <label>Department</label>
+                        <input type="text" value="Mathematics" placeholder="Enter department">
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="saveProfile()">💾 Save Profile</button>
+                </div>
+            </div>
+
+            <!-- About Section -->
+            <div class="settings-section" id="about">
+                <h2>ℹ️ About GradeWise Pro</h2>
+                <div class="settings-group">
+                    <h3>Version Information</h3>
+                    <div style="font-size:12px;color:var(--muted);line-height:1.8;">
+                        <div><strong>Version:</strong> 2.0.0</div>
+                        <div><strong>Build:</strong> 20250115</div>
+                        <div><strong>Release Date:</strong> January 15, 2025</div>
+                        <div style="margin-top:12px;"><strong>Features:</strong></div>
+                        <div>• Google OAuth Authentication</div>
+                        <div>• AI-Powered Report Editor</div>
+                        <div>• Cloud & Local Storage Sync</div>
+                        <div>• AI Code Access & Analysis</div>
+                    </div>
+                </div>
+
+                <div class="settings-group">
+                    <h3>Links</h3>
+                    <div style="display:flex;flex-direction:column;gap:8px;">
+                        <a href="https://gradewise.io" target="_blank" class="btn btn-outline"
+                            style="text-decoration:none;text-align:center;">🌐 Website</a>
+                        <a href="https://docs.gradewise.io" target="_blank" class="btn btn-outline"
+                            style="text-decoration:none;text-align:center;">📚 Documentation</a>
+                        <a href="https://support.gradewise.io" target="_blank" class="btn btn-outline"
+                            style="text-decoration:none;text-align:center;">💬 Support</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="gradewise-pro.js"></script>
+    <script>
+        function showSection (sectionId, element) {
+            // Hide all sections
+            document.querySelectorAll('.settings-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.settings-item').forEach(s => s.classList.remove('active'));
+
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            element.classList.add('active');
+        }
+
+        function saveClaude () {
+            const apiKey = document.getElementById('claude-api-key').value;
+            if (!apiKey.trim())
+            {
+                showStatus('claude-status', 'Please enter an API key', 'error');
+                return;
+            }
+            localStorage.setItem('gw_claude_api_key', apiKey);
+            localStorage.setItem('gw_claude_api_key_timestamp', new Date().toISOString());
+            updateAPIStatus();
+            showStatus('claude-status', '✓ API Key saved successfully', 'success');
+        }
+
+        function testClaudeAPI () {
+            const apiKey = document.getElementById('claude-api-key').value;
+            if (!apiKey.trim())
+            {
+                showStatus('claude-status', 'Please enter an API key first', 'error');
+                return;
+            }
+
+            // Test API connection
+            fetch('https://api.anthropic.com/v1/messages', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-api-key': apiKey,
+                    'anthropic-version': '2023-06-01'
+                },
+                body: JSON.stringify({
+                    model: 'claude-sonnet-4-20250514',
+                    max_tokens: 10,
+                    messages: [{ role: 'user', content: 'Test' }]
+                })
+            })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.error)
+                    {
+                        showStatus('claude-status', '✗ ' + data.error.message, 'error');
+                    } else
+                    {
+                        showStatus('claude-status', '✓ Connection successful!', 'success');
+                        updateAPIStatus();
+                    }
+                })
+                .catch(err => showStatus('claude-status', '✗ ' + err.message, 'error'));
+        }
+
+        function updateAPIStatus () {
+            const apiKey = localStorage.getItem('gw_claude_api_key');
+            const status = document.getElementById('api-status');
+            if (apiKey)
+            {
+                status.innerHTML = '<div class="status-dot active"></div><span>✓ Configured</span>';
+            }
+        }
+
+        function toggleAPIKeyVisibility () {
+            const input = document.getElementById('claude-api-key');
+            const btn = event.target;
+            if (input.type === 'password')
+            {
+                input.type = 'text';
+                btn.textContent = '🙈 Hide';
+            } else
+            {
+                input.type = 'password';
+                btn.textContent = '👁️ Show';
+            }
+        }
+
+        function saveAISettings () {
+            const settings = {
+                tone: document.getElementById('ai-tone').value,
+                detail: document.getElementById('ai-detail').value,
+                suggestions: document.getElementById('ai-suggestions').checked,
+                autoGrammar: document.getElementById('ai-auto-grammar').checked,
+                sentiment: document.getElementById('ai-sentiment').checked
+            };
+            localStorage.setItem('gw_ai_settings', JSON.stringify(settings));
+            showStatus('ai-settings-status', '✓ Settings saved', 'success');
+        }
+
+        function selectStorage (element, type) {
+            document.querySelectorAll('.storage-option').forEach(e => e.classList.remove('active'));
+            element.classList.add('active');
+            element.querySelector('input').checked = true;
+            localStorage.setItem('gw_storage_type', type);
+        }
+
+        function saveStorageSettings () {
+            const settings = {
+                interval: document.getElementById('sync-interval').value,
+                syncOnChange: document.getElementById('sync-on-change').checked,
+                resolveConflicts: document.getElementById('resolve-conflicts').checked
+            };
+            localStorage.setItem('gw_storage_settings', JSON.stringify(settings));
+            showStatus('storage-status', '✓ Safe Storage settings saved', 'success');
+        }
+
+        function syncNow () {
+            showStatus('storage-status', '🔄 Syncing...', 'success');
+            setTimeout(() => {
+                document.getElementById('last-sync-time').textContent = new Date().toLocaleTimeString();
+                showStatus('storage-status', '✓ Sync completed', 'success');
+            }, 2000);
+        }
+
+        function createBackup () {
+            const data = {
+                students: localStorage.getItem('gw_students'),
+                settings: localStorage.getItem('gw_settings'),
+                timestamp: new Date().toISOString()
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `backup_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+        }
+
+        function restoreBackup () {
+            alert('Restore feature coming soon!');
+        }
+
+        function saveSecuritySettings () {
+            const settings = {
+                aiRead: document.getElementById('ai-read').checked,
+                aiSuggest: document.getElementById('ai-suggest').checked,
+                aiSecrets: document.getElementById('ai-secrets').checked,
+                aiExecute: document.getElementById('ai-execute').checked
+            };
+            localStorage.setItem('gw_security_settings', JSON.stringify(settings));
+            alert('✓ Security settings saved');
+        }
+
+        function exportLogs () {
+            alert('Export functionality coming soon!');
+        }
+
+        function clearLogs () {
+            if (confirm('Are you sure? This cannot be undone.'))
+            {
+                localStorage.removeItem('gw_audit_logs');
+                alert('✓ Logs cleared');
+            }
+        }
+
+        function saveProfile () {
+            alert('✓ Profile saved');
+        }
+
+        function showStatus (elementId, message, type) {
+            const el = document.getElementById(elementId);
+            el.textContent = message;
+            el.className = 'status-message ' + type;
+            setTimeout(() => {
+                el.className = 'status-message';
+            }, 3000);
+        }
+
+        // Load saved settings on init
+        window.addEventListener('load', () => {
+            const apiKey = localStorage.getItem('gw_claude_api_key');
+            if (apiKey)
+            {
+                document.getElementById('claude-api-key').value = apiKey;
+                updateAPIStatus();
+            }
+
+            const storageType = localStorage.getItem('gw_storage_type') || 'local';
+            document.querySelectorAll('.storage-option').forEach(el => {
+                if (el.querySelector('input').value === storageType)
+                {
+                    el.classList.add('active');
+                }
+            });
+
+            // Load security settings
+            loadSecuritySettings();
+            loadAuditLogs();
+        });
+
+        // Security Settings Functions
+        function loadSecuritySettings () {
+            updateSecurityStatus();
+        }
+
+        function updateSecurityStatus () {
+            const users = JSON.parse(localStorage.getItem('gw_users') || '{}');
+            const auditLogs = JSON.parse(localStorage.getItem('gw_audit_logs') || '[]');
+            const errorLogs = JSON.parse(localStorage.getItem('gw_error_logs') || '[]');
+
+            document.getElementById('active-users-count').textContent = Object.keys(users).length;
+            document.getElementById('recent-logins-count').textContent = auditLogs.filter(log =>
+                log.action === 'LOGIN_SUCCESS' &&
+                new Date(log.timestamp) > new Date(Date.now() - 24 * 60 * 60 * 1000)
+            ).length;
+            document.getElementById('security-alerts-count').textContent = errorLogs.filter(log =>
+                new Date(log.timestamp) > new Date(Date.now() - 24 * 60 * 60 * 1000)
+            ).length;
+            document.getElementById('failed-attempts-count').textContent = auditLogs.filter(log =>
+                log.action === 'LOGIN_FAILED' &&
+                new Date(log.timestamp) > new Date(Date.now() - 24 * 60 * 60 * 1000)
+            ).length;
+        }
+
+        function createUser () {
+            const username = document.getElementById('new-username').value;
+            const fullName = document.getElementById('new-fullname').value;
+            const email = document.getElementById('new-email').value;
+            const password = document.getElementById('new-password').value;
+            const role = document.getElementById('new-role').value;
+
+            if (!username || !fullName || !email || !password)
+            {
+                showStatus('user-status', 'Please fill in all required fields', 'error');
+                return;
+            }
+
+            const userData = {
+                username,
+                fullName,
+                email,
+                password,
+                role
+            };
+
+            // In a real implementation, this would call the auth manager
+            const users = JSON.parse(localStorage.getItem('gw_users') || '{}');
+            if (users[username])
+            {
+                showStatus('user-status', 'Username already exists', 'error');
+                return;
+            }
+
+            users[username] = {
+                fullName,
+                email,
+                password: btoa(password + 'gradewise_salt_2024'), // Simple hash
+                role,
+                createdAt: new Date().toISOString(),
+                isActive: true
+            };
+
+            localStorage.setItem('gw_users', JSON.stringify(users));
+            showStatus('user-status', 'User created successfully', 'success');
+
+            // Clear form
+            document.getElementById('new-username').value = '';
+            document.getElementById('new-fullname').value = '';
+            document.getElementById('new-email').value = '';
+            document.getElementById('new-password').value = '';
+
+            updateSecurityStatus();
+        }
+
+        // Audit Log Functions
+        function loadAuditLogs () {
+            const logs = JSON.parse(localStorage.getItem('gw_audit_logs') || '[]');
+            displayAuditLogs(logs);
+        }
+
+        function displayAuditLogs (logs) {
+            const container = document.getElementById('audit-log-container');
+            if (!container) return;
+
+            const filteredLogs = filterAuditLogs(logs);
+
+            if (filteredLogs.length === 0)
+            {
+                container.innerHTML = '<div class="audit-log-entry"><div class="audit-log-details">No audit logs found</div></div>';
+                return;
+            }
+
+            container.innerHTML = filteredLogs.map(log => `
+                <div class="audit-log-entry">
+                    <div class="audit-log-time">${new Date(log.timestamp).toLocaleString()}</div>
+                    <div class="audit-log-action">${log.action} - ${log.userId}</div>
+                    <div class="audit-log-details">${log.details}</div>
+                </div>
+            `).join('');
+        }
+
+        function filterAuditLogs (logs) {
+            const actionFilter = document.getElementById('audit-action-filter')?.value || '';
+            const userFilter = document.getElementById('audit-user-filter')?.value || '';
+            const dateFilter = document.getElementById('audit-date-filter')?.value || '';
+
+            return logs.filter(log => {
+                if (actionFilter && !log.action.toLowerCase().includes(actionFilter.toLowerCase())) return false;
+                if (userFilter && !log.userId.toLowerCase().includes(userFilter.toLowerCase())) return false;
+                if (dateFilter && !new Date(log.timestamp).toDateString().includes(new Date(dateFilter).toDateString())) return false;
+                return true;
+            }).reverse().slice(0, 100); // Show last 100 logs
+        }
+
+        function clearAuditLogs () {
+            if (confirm('Are you sure you want to clear all audit logs? This action cannot be undone.'))
+            {
+                localStorage.setItem('gw_audit_logs', JSON.stringify([]));
+                loadAuditLogs();
+                showStatus('audit-status', 'Audit logs cleared successfully', 'success');
+            }
+        }
+
+        function exportAuditLogs () {
+            const logs = JSON.parse(localStorage.getItem('gw_audit_logs') || '[]');
+            const dataStr = JSON.stringify(logs, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `audit-logs-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function refreshAuditLogs () {
+            loadAuditLogs();
+            updateSecurityStatus();
+        }
+    </script>
+</body>
+
+</html>

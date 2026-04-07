@@ -1,0 +1,100 @@
+{
+  "name": "gradewise-pro",
+  "version": "2.0.0",
+  "description": "GradeWise Pro - AI-Powered Student Report Management System",
+  "main": "main.js",
+  "homepage": "./",
+  "author": "KTL Wise Pro",
+  "license": "MIT",
+  "type": "commonjs",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "build": "electron-builder --win --publish never",
+    "build-portable": "electron-builder --win portable --publish never",
+    "build-installer": "electron-builder --win nsis --publish never",
+    "build-all": "npm run build-portable && npm run build-installer",
+    "pack": "electron-builder --win --dir",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "education",
+    "grading",
+    "reports",
+    "ai",
+    "teacher",
+    "student"
+  ],
+  "devDependencies": {
+    "electron": "^41.0.3",
+    "electron-builder": "^25.1.8"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.80.0"
+  },
+  "build": {
+    "appId": "com.ktlwise.gradewise-pro",
+    "productName": "GradeWise Pro",
+    "directories": {
+      "buildResources": "assets",
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "gradewise-pro.html",
+      "gradewise-pro.js",
+      "google-auth.html",
+      "ai-report-editor.html",
+      "ai-code-access.html",
+      "ai-settings.html",
+      "style.css",
+      "report-template.html",
+      "analysis.html",
+      "batch-printing.html",
+      "groups.html",
+      "import-results.html",
+      "settings.html",
+      "claude_api.py",
+      "assets/**/*",
+      "Templates/**/*",
+      "node_modules/**/*"
+    ],
+    "publish": null,
+    "win": {
+      "icon": "assets/icon.ico",
+      "certificateFile": null,
+      "certificatePassword": null,
+      "signingHashAlgorithms": [
+        "sha256"
+      ],
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "GradeWise Pro",
+      "installerIcon": "assets/icon.ico",
+      "uninstallerIcon": "assets/icon.ico",
+      "installerHeaderIcon": "assets/icon.ico"
+    },
+    "portable": {
+      "artifactName": "${productName}-${version}-portable.exe"
+    }
+  }
+}
